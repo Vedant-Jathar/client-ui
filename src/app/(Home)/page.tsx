@@ -1,8 +1,56 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import { Product } from "../types";
+import ProductCard from "./components/ProductCard";
 
 export default function Home() {
+
+  const products: Product[] = [
+    {
+      _id: "1",
+      name: "Margerita pizza",
+      description: "This is a delicious pizza originally from California nvjibnrfj wfbewjibf ewfbewjb jwbwej jiwdcbwj hjbfewijf ibwdj ijjbfjwe jibfef buebf",
+      image: "/pizza-main.png",
+      price: 800
+    },
+    {
+      _id: "2",
+      name: "Pepporoni pizza",
+      description: "This is a delicious pizza",
+      image: "/pizza-main.png",
+      price: 800
+    },
+    {
+      _id: "3",
+      name: "Spinach pizza",
+      description: "This is a delicious pizza",
+      image: "/pizza-main.png",
+      price: 800
+    },
+    {
+      _id: "4",
+      name: "Corn pizza",
+      description: "This is a delicious pizza",
+      image: "/pizza-main.png",
+      price: 800
+    },
+    {
+      _id: "5",
+      name: "Chicken pizza",
+      description: "This is a delicious pizza",
+      image: "/pizza-main.png",
+      price: 800
+    },
+    {
+      _id: "6",
+      name: "Special pizza",
+      description: "This is a delicious pizza",
+      image: "/pizza-main.png",
+      price: 800
+    },
+  ]
+
   return (
     <>
       <section className="bg-white">
@@ -24,16 +72,29 @@ export default function Home() {
 
       <section>
         <div className="container py-12">
-          <Tabs defaultValue="Pizza" className="w-[400px]">
-            <TabsList>
+          <Tabs defaultValue="Pizza">
+            <TabsList className="mb-4">
               <TabsTrigger value="Pizza" className="text-lg p-4 data-[state=active]:bg-white">Pizza</TabsTrigger>
               <TabsTrigger value="Beverages" className="text-md p-4 data-[state=active]:bg-white">Beverages</TabsTrigger>
             </TabsList>
-            <TabsContent value="Pizza">Pizza</TabsContent>
-            <TabsContent value="Beverages">Beverages</TabsContent>
+            <TabsContent value="Pizza">
+              <div className="grid grid-cols-4 gap-4">
+                {
+                  products.map((prod) => <ProductCard product={prod} key={prod._id} />)
+                }
+              </div>
+            </TabsContent>
+            <TabsContent value="Beverages">
+              <div className="grid grid-cols-4 gap-4">
+                {
+                  products.map((prod) => <ProductCard product={prod} key={prod._id} />)
+                }
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
       </section>
     </>
-  );
+  )
+
 }
