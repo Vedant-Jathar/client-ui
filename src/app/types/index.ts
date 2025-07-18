@@ -5,3 +5,10 @@ export type Product = {
     image: string
     price: number
 }
+
+export type Topping = {
+    _id: string
+    name: string
+    price: number
+    image: string
+}

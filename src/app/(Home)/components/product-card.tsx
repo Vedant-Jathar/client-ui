@@ -7,6 +7,29 @@ import { Dialog, DialogContent, DialogTrigger, } from "@/components/ui/dialog"
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { ToppingsList } from './toppings-list'
+
+const toppings = [
+    {
+        _id: "1",
+        name: "Cheese",
+        price: 50,
+        image: "/cheese.png"
+    },
+    {
+        _id: "2",
+        name: "Chicken",
+        price: 70,
+        image: "/chicken.png"
+    },
+    {
+        _id: "3",
+        name: "Jelapeno",
+        price: 80,
+        image: "/jelapeno.png"
+    },
+]
+
 
 const ProductCard = ({ product }: { product: Product }) => {
     return (
@@ -82,7 +105,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                                     </RadioGroup>
                                 </div>
 
-                                <div>
+                                <div className='mb-4'>
                                     <h4 className='mb-2'>Choose the crust</h4>
                                     <RadioGroup defaultValue="thick" className="grid grid-cols-3 gap-4">
                                         <div>
@@ -110,6 +133,10 @@ const ProductCard = ({ product }: { product: Product }) => {
                                         </div>
 
                                     </RadioGroup>
+                                </div>
+
+                                <div>
+                                    <ToppingsList toppings={toppings} />
                                 </div>
 
                             </div>
