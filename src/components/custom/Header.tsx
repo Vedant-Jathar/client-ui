@@ -3,8 +3,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "
 import Link from 'next/link'
 import { Phone, ShoppingCart } from 'lucide-react'
 import { Button } from '../ui/button'
+import { Tenant } from '@/lib/types'
 
-const Header = () => {
+const Header = async () => {
+
+    const tenantsResponse = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/auth/tenants/all`, {
+        next: {
+            revalidate: 3600
+        }
+    })
+
+    if (!tenantsResponse.ok) {
+        throw Error("Failed to load tenants")
+    }
+    const tenants = await tenantsResponse.json()
+
+    console.log("tenants", tenants);
+
+
     return (
         <header className="bg-white">
             <nav className='py-5 container flex items-center justify-between'>
@@ -26,10 +42,15 @@ const Header = () => {
                         <SelectTrigger className="w-[180px] focus:ring-0">
                             <SelectValue placeholder="Select Restaurant" />
                         </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="dominoz">Dominoz</SelectItem>
-                            <SelectItem value="pizza_hut">Pizza Hut</SelectItem>
-                            <SelectItem value="cd">Cheesy Delight</SelectItem>
+                        <SelectContent className="max-h-60 overflow-y-auto">
+                            {
+                                tenants.map((tenant: Tenant) => {
+                                    return (
+                                        <SelectItem key={tenant.id} value={tenant.id}>{tenant.name}</SelectItem>
+                                    )
+                                })
+                            }
+
                         </SelectContent>
                     </Select>
                 </div>

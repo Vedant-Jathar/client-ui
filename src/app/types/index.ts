@@ -12,3 +12,4 @@ export type Topping = {
     price: number
     image: string
 }
+

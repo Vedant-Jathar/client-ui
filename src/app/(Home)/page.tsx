@@ -3,8 +3,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { Product } from "../types";
 import ProductCard from "./components/product-card";
+import { Category } from "@/lib/types";
 
-export default function Home() {
+export default async function Home() {
+
+  const categoriesResponse = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/category`, {
+    next: {
+      revalidate: 3600
+    }
+  })
+
+  if (!categoriesResponse.ok) {
+    throw Error("Failed to load categories")
+  }
+
+  const categories: Category[] = await categoriesResponse.json()
+
+  console.log("categories", categories);
+
 
   const products: Product[] = [
     {
@@ -72,10 +88,15 @@ export default function Home() {
 
       <section>
         <div className="container py-12">
-          <Tabs defaultValue="Pizza">
+          <Tabs defaultValue="687544aadf99f9663ee0346f">
             <TabsList className="mb-4">
-              <TabsTrigger value="Pizza" className="text-lg p-4 data-[state=active]:bg-white">Pizza</TabsTrigger>
-              <TabsTrigger value="Beverages" className="text-md p-4 data-[state=active]:bg-white">Beverages</TabsTrigger>
+              {
+                categories.map((category: Category) => {
+                  return (
+                    <TabsTrigger key={category._id} value={category._id} className="text-lg p-4 data-[state=active]:bg-white">{category.name}</TabsTrigger>
+                  )
+                })
+              }
             </TabsList>
             <TabsContent value="Pizza">
               <div className="grid grid-cols-4 gap-4">
