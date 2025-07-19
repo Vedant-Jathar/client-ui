@@ -1,4 +1,3 @@
-import { Product } from '@/app/types'
 import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, } from "@/components/ui/card"
 import Image from 'next/image'
@@ -10,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ToppingsList } from './toppings-list'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
+import { Product } from '@/lib/types'
 
 const toppings = [
     {
@@ -39,6 +39,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <CardHeader className='flex items-center justify-center'>
                 <Image alt="pizza_image" src={product.image} width={150} height={150} />
             </CardHeader>
+            
             <CardContent>
                 <h2 className='text-xl font-semibold'>{product.name}</h2>
                 <p className='mt-2 truncate cursor-default'>{product.description}</p>
@@ -56,7 +57,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <CardFooter className='flex items-center justify-between'>
                 <p>
                     <span>From</span>
-                    <span className='ml-[5px]'>₹{product.price}</span>
+                    <span className='ml-[5px]'>₹400</span>
                 </p>
                 <Dialog>
                     <DialogTrigger className="bg-orange-200 hover:bg-orange-300 text-orange-600 py-2 px-6 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150">Choose</DialogTrigger>
