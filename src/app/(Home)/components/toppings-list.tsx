@@ -1,21 +1,17 @@
 'use client'
 
-import { useState } from "react"
 import { ToppingCard } from "./topping-card"
 import { Topping } from "@/lib/types"
 
-export const ToppingsList = ({ toppings }: { toppings: Topping[] }) => {
+export type toppingListProps = {
+    toppings: Topping[],
+    selectedToppings: Topping[],
+    handleCheckboxCheck: (topping: Topping) => void
+}
 
-    const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
+export const ToppingsList = ({ toppings, selectedToppings, handleCheckboxCheck }: toppingListProps) => {
 
-    const handleCheckboxCheck = (topping: Topping) => {
-        const isAlreadyExisting = selectedToppings.some((element) => element._id === topping._id)
-        if (isAlreadyExisting) {
-            setSelectedToppings(prev => prev.filter(element => element._id !== topping._id))
-            return
-        }
-        setSelectedToppings(prev => [...prev, topping])
-    }
+
 
     return (
         <>

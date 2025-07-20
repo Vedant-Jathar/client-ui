@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Product, Topping } from '@/lib/types'
 import Image from 'next/image'
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { startTransition, Suspense, useEffect, useState } from 'react'
 import { ToppingsList } from './toppings-list'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
@@ -17,6 +17,7 @@ type chosenConfig = {
 const ProductModal = ({ product }: { product: Product }) => {
 
     const [toppings, setToppings] = useState<Topping[]>([])
+
     const [chosenConfig, setChosenConfig] = useState<chosenConfig>(() => {
         const initial: chosenConfig = {};
 
@@ -26,6 +27,21 @@ const ProductModal = ({ product }: { product: Product }) => {
 
         return initial;
     })
+
+    const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
+
+    const handleCheckboxCheck = (topping: Topping) => {
+        const isAlreadyExisting = selectedToppings.some((element) => element._id === topping._id)
+
+        startTransition(() => {
+            if (isAlreadyExisting) {
+                setSelectedToppings(prev => prev.filter(element => element._id !== topping._id))
+                return
+            }
+            setSelectedToppings(prev => [...prev, topping])
+        })
+
+    }
 
     const handleAddToCart = () => {
         console.log("Adding to cart");
@@ -109,7 +125,7 @@ const ProductModal = ({ product }: { product: Product }) => {
 
                         <div>
                             <Suspense fallback={"Loading...."}>
-                                <ToppingsList toppings={toppings} />
+                                <ToppingsList toppings={toppings} handleCheckboxCheck={handleCheckboxCheck} selectedToppings={selectedToppings} />
                             </Suspense>
                         </div>
 
