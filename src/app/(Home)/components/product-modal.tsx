@@ -10,13 +10,37 @@ import { ToppingsList } from './toppings-list'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
 
+type chosenConfig = {
+    [key: string]: string
+}
+
 const ProductModal = ({ product }: { product: Product }) => {
 
     const [toppings, setToppings] = useState<Topping[]>([])
-    
+    const [chosenConfig, setChosenConfig] = useState<chosenConfig>(() => {
+        const initial: chosenConfig = {};
+
+        Object.entries(product.category.priceConfiguration).forEach(([key, value]) => {
+            initial[key] = value.availableOptions[0]; // default to first option
+        });
+
+        return initial;
+    })
+
     const handleAddToCart = () => {
         console.log("Adding to cart");
     }
+
+    const handleValueChange = (key: string, value: string) => {
+        setChosenConfig((prev) => {
+            return {
+                ...prev,
+                [key]: value
+            }
+        })
+    }
+
+    console.log("chosenConfig", chosenConfig);
 
     useEffect(() => {
 
@@ -52,7 +76,12 @@ const ProductModal = ({ product }: { product: Product }) => {
                                     return (
                                         <div key={key}>
                                             <h4 className='mb-2'>Choose the {key}</h4>
-                                            <RadioGroup defaultValue={value.availableOptions[0]} className="grid grid-cols-3 gap-4 mb-4">
+                                            <RadioGroup
+                                                defaultValue={value.availableOptions[0]} className="grid grid-cols-3 gap-4 mb-4"
+                                                onValueChange={(data) => {
+                                                    handleValueChange(key, data)
+                                                }}
+                                            >
                                                 {
                                                     value.availableOptions.map((option) => {
                                                         return (

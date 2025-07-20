@@ -24,7 +24,7 @@ export const ToppingCard = ({ topping, handleCheckboxCheck, selectedToppings }: 
                 <Image src={topping.image} width={100} height={100} alt="topping-image" />
                 <h4>{topping.name}</h4>
                 <h3>&#8377;{topping.price}</h3>
-                {isCurrentSelected && <CircleCheck className="absolute top-1 right-1 text-primary" />}
+                {/* {isCurrentSelected && <CircleCheck className="absolute top-1 right-1 text-primary" />} */}
             </Button>
         </>
     )
