@@ -1,8 +1,8 @@
 'use client'
 
-import { Topping } from "@/app/types"
 import { useState } from "react"
 import { ToppingCard } from "./topping-card"
+import { Topping } from "@/lib/types"
 
 
 export const ToppingsList = ({ toppings }: { toppings: Topping[] }) => {
