@@ -14,6 +14,7 @@ export const ProductList = async () => {
     const categories: Category[] = await categoriesResponse.json()
     const products: { data: Product[] } = await productsResponse.json()
 
+    console.log("categories", categories);
 
     return (
         <>

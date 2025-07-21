@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
 import { useAppDispatch } from '@/lib/store/hooks/hooks'
 import { addtoCart, CartItem } from '@/lib/store/features/Cart/cartSlice'
+import { DialogTitle } from '@radix-ui/react-dialog'
 
 type chosenConfig = {
     [key: string]: string
@@ -123,7 +124,6 @@ const ProductModal = ({ product }: { product: Product }) => {
     }
 
     useEffect(() => {
-
         const fetchData = async () => {
             const toppingsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/api/catalog/toppings?tenantId=7`)
 
@@ -187,7 +187,7 @@ const ProductModal = ({ product }: { product: Product }) => {
 
                         <div>
                             <Suspense fallback={"Loading...."}>
-                                {product.category.name === "Pizza" && <ToppingsList toppings={toppings} handleCheckboxCheck={handleCheckboxCheck} selectedToppings={selectedToppings} />}
+                                {product.category.hasToppings && <ToppingsList toppings={toppings} handleCheckboxCheck={handleCheckboxCheck} selectedToppings={selectedToppings} />}
                             </Suspense>
                         </div>
 

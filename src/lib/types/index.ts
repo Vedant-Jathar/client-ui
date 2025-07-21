@@ -5,7 +5,7 @@ export interface Tenant {
 }
 
 export interface PriceConfiguration {
-    [key: string]: { 
+    [key: string]: {
         priceType: "base" | "additional",
         availableOptions: string[]
     }
@@ -19,10 +19,11 @@ export interface Attribute {
 }
 
 export interface Category {
-    _id?:string
+    _id?: string
     name: string
     priceConfiguration: PriceConfiguration,
     attributes: Attribute[]
+    hasToppings: boolean
 }
 
 
