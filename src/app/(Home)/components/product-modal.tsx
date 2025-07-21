@@ -96,7 +96,7 @@ const ProductModal = ({ product }: { product: Product }) => {
             price += topping.price
         })
         return price
-    }, [chosenConfig, selectedToppings,product])
+    }, [chosenConfig, selectedToppings, product])
 
 
     const handleAddToCart = (product: Product) => {
@@ -187,7 +187,7 @@ const ProductModal = ({ product }: { product: Product }) => {
 
                         <div>
                             <Suspense fallback={"Loading...."}>
-                                <ToppingsList toppings={toppings} handleCheckboxCheck={handleCheckboxCheck} selectedToppings={selectedToppings} />
+                                {product.category.name === "Pizza" && <ToppingsList toppings={toppings} handleCheckboxCheck={handleCheckboxCheck} selectedToppings={selectedToppings} />}
                             </Suspense>
                         </div>
 
