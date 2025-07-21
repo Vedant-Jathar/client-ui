@@ -20,24 +20,24 @@ const initialState: CartState = {
 }
 
 export const cartSlice = createSlice({
-
     name: "cart",
     initialState,
     reducers: {
         addtoCart: (state, action: PayloadAction<CartItem>) => {
-            return {
-                ...state,
-                cartItems: [
-                    ...state.cartItems,
-                    action.payload
-                ]
+            const localStorageCartIems = JSON.stringify([...state.cartItems, action.payload])
+            if (typeof window !== undefined && window.localStorage) {
+                window.localStorage.setItem("CartItems", localStorageCartIems)
             }
+            state.cartItems.push(action.payload);
+        },
+
+        setInitialCartItems: (state, action: PayloadAction<CartItem[]>) => {
+            state.cartItems = action.payload
         }
     }
-
 })
 
-export const { addtoCart } = cartSlice.actions
+export const { addtoCart, setInitialCartItems } = cartSlice.actions
 
 export default cartSlice.reducer
 

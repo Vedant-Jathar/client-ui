@@ -1,6 +1,7 @@
 'use client'
+import { CartItem, setInitialCartItems } from '@/lib/store/features/Cart/cartSlice'
 import { AppStore, makeStore } from '@/lib/store/store'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
 
 export default function StoreProvider({
@@ -13,6 +14,23 @@ export default function StoreProvider({
         // Create the store instance the first time this renders
         storeRef.current = makeStore()
     }
+
+    // Once the store is initilized then get the cartItems from the local storage and set it in the store
+
+    useEffect(() => {
+        const cartItemsString = window.localStorage.getItem('CartItems')
+
+        if (cartItemsString) {
+            try {
+                const parsedItems = JSON.parse(cartItemsString) as CartItem[]
+                storeRef.current?.dispatch(setInitialCartItems(parsedItems))
+            } catch (error) {
+                console.error('Error parsing CartItems from localStorage:', error)
+            }
+        }
+
+    }, [])
+
 
     return <Provider store={storeRef.current}>{children}</Provider>
 }

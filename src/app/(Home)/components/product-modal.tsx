@@ -70,15 +70,12 @@ const ProductModal = ({ product }: { product: Product }) => {
         })
     }
 
-
-    useEffect(() => {
+    useEffect(() => { 
 
         const fetchData = async () => {
             const toppingsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/api/catalog/toppings?tenantId=7`)
 
             const toppingsList = await toppingsResponse.json()
-
-            console.log("toppingsList", toppingsList);
 
             setToppings(toppingsList)
         }
