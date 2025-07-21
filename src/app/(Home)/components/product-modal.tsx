@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Product, Topping } from '@/lib/types'
 import Image from 'next/image'
-import React, { startTransition, Suspense, useEffect, useState } from 'react'
+import React, { startTransition, Suspense, useEffect, useMemo, useState } from 'react'
 import { ToppingsList } from './toppings-list'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
@@ -47,6 +47,58 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     }
 
+    // {
+    // "_id": "687b9ba78cc6886eb2f0483a",
+    // "name": "Jelapeno Pizza",
+    // "description": "This is the best pizza in town",
+    // "image": "https://pizza-delivery-app-mern.s3.eu-north-1.amazonaws.com/3066a46c-0559-444a-897f-14b67209fcd4",
+    // "priceConfiguration": {
+    //     "Size": {
+    //         "priceType": "base",
+    //         "availableOptions": {
+    //             "Small": 10,
+    //             "Medium": 20,
+    //             "Large": 30
+    //         },
+    //         "_id": "687b9ba78cc6886eb2f0483b"
+    //     },
+    //     "Crust": {
+    //         "priceType": "additional",
+    //         "availableOptions": {
+    //             "Thin": 40,
+    //             "Thick": 50
+    //         },
+    //         "_id": "687b9ba78cc6886eb2f0483c"
+    //     }
+    // },
+
+
+    // chosenConfig: {
+    //   size: "small",
+    //   crust: "thin"
+    // }
+
+    // [[size, "small"], [crust, "thin"]]
+
+
+
+    const totalPrice = useMemo(() => {
+
+        let price = 0
+        Object.entries(chosenConfig).forEach(([key, value]) => {
+            Object.entries(product.priceConfiguration).forEach(([Key, Value]) => {
+                if (key === Key) {
+                    price += Value.availableOptions[value]
+                }
+            })
+        })
+        selectedToppings.forEach((topping: Topping) => {
+            price += topping.price
+        })
+        return price
+    }, [chosenConfig, selectedToppings,product])
+
+
     const handleAddToCart = (product: Product) => {
 
         const itemToAdd: CartItem = {
@@ -56,7 +108,7 @@ const ProductModal = ({ product }: { product: Product }) => {
                 selectedToppings
             }
         }
-        
+
         dispatch(addtoCart(itemToAdd))
 
     }
@@ -70,7 +122,7 @@ const ProductModal = ({ product }: { product: Product }) => {
         })
     }
 
-    useEffect(() => { 
+    useEffect(() => {
 
         const fetchData = async () => {
             const toppingsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/api/catalog/toppings?tenantId=7`)
@@ -140,7 +192,7 @@ const ProductModal = ({ product }: { product: Product }) => {
                         </div>
 
                         <div className='flex items-center justify-between mt-12'>
-                            <span className='font-semibold'>&#8377;500</span>
+                            <span className='font-semibold'>&#8377;{totalPrice}</span>
                             <Button onClick={() => {
                                 handleAddToCart(product)
                             }}>

@@ -1,4 +1,8 @@
 "use client"
+
+// This component has been made because "ssr:false" can only be done in a client component
+// So i make a component ssr:false and then wrap it around a client component and sxport it.
+
 import dynamic from 'next/dynamic'
 import React from 'react'
 
