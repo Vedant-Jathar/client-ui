@@ -9,12 +9,16 @@ import React, { startTransition, Suspense, useEffect, useState } from 'react'
 import { ToppingsList } from './toppings-list'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
+import { useAppDispatch } from '@/lib/store/hooks/hooks'
+import { addtoCart, CartItem } from '@/lib/store/features/Cart/cartSlice'
 
 type chosenConfig = {
     [key: string]: string
 }
 
 const ProductModal = ({ product }: { product: Product }) => {
+
+    const dispatch = useAppDispatch()
 
     const [toppings, setToppings] = useState<Topping[]>([])
 
@@ -43,8 +47,18 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     }
 
-    const handleAddToCart = () => {
-        console.log("Adding to cart");
+    const handleAddToCart = (product: Product) => {
+
+        const itemToAdd: CartItem = {
+            product,
+            chosenConfig: {
+                priceConfig: chosenConfig,
+                selectedToppings
+            }
+        }
+        
+        dispatch(addtoCart(itemToAdd))
+
     }
 
     const handleValueChange = (key: string, value: string) => {
@@ -56,7 +70,6 @@ const ProductModal = ({ product }: { product: Product }) => {
         })
     }
 
-    console.log("chosenConfig", chosenConfig);
 
     useEffect(() => {
 
@@ -131,7 +144,9 @@ const ProductModal = ({ product }: { product: Product }) => {
 
                         <div className='flex items-center justify-between mt-12'>
                             <span className='font-semibold'>&#8377;500</span>
-                            <Button onClick={handleAddToCart}>
+                            <Button onClick={() => {
+                                handleAddToCart(product)
+                            }}>
                                 <ShoppingCart />
                                 <span>Add to Cart</span>
                             </Button>
