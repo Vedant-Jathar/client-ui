@@ -1,24 +1,20 @@
 "use client"
-import { increment } from '@/lib/store/features/Cart/cartSlice'
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks/hooks'
+import { useAppSelector } from '@/lib/store/hooks/hooks'
 import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
 const CartCounter = () => {
-    // const dispatch = useAppDispatch()
-    // This component has subscribed to only the "state.cart.value".
-    // const value = useAppSelector((state) => state.cart.value)
-    // const handleClick = () => {
-    //     dispatch(increment())
-    // }
+
+    const noOfCartItems = useAppSelector((state) => state.cart.cartItems.length)
+
     return (
         <div className='relative'>
             <Link href={"/cart"}>
                 <ShoppingCart className='hover:text-primary' />
             </Link>
             <div className='absolute -top-4 -right-5 text-white bg-orange-600 rounded-full h-6 w-6 flex items-center font-bold justify-center'>
-                3
+                {noOfCartItems}
             </div>
         </div>
     )

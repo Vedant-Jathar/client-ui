@@ -8,6 +8,7 @@ import CartCounter from './cart-counter'
 
 const Header = async () => {
 
+
     const tenantsResponse = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/auth/tenants/all`, {
         next: {
             revalidate: 3600
