@@ -3,9 +3,9 @@ import { Category, Product } from '@/lib/types';
 import React from 'react'
 import ProductCard from './product-card';
 
-export const ProductList = async () => {
+export const ProductList = async ({ searchParams }: { searchParams: { restaurant: string } }) => {
 
-    const [categoriesResponse, productsResponse] = await Promise.all([fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/category`), fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/products?limit=100&tenantId=8`)]);
+    const [categoriesResponse, productsResponse] = await Promise.all([fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/category`), fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/products?limit=100&tenantId=${searchParams.restaurant}`)]);
 
     if (!productsResponse.ok || !categoriesResponse.ok) {
         throw Error("Failed to load Products or Categories")
@@ -13,8 +13,6 @@ export const ProductList = async () => {
 
     const categories: Category[] = await categoriesResponse.json()
     const products: { data: Product[] } = await productsResponse.json()
-
-    console.log("categories", categories);
 
     return (
         <>

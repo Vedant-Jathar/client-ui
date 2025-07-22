@@ -2,52 +2,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Suspense } from "react";
 import ProductList from "./components/product-list";
-export default async function Home() {
 
-  // const products: Product[] = [
-  //   {
-  //     _id: "1",
-  //     name: "Margerita pizza",
-  //     description: "This is a delicious pizza originally from California nvjibnrfj wfbewjibf ewfbewjb jwbwej jiwdcbwj hjbfewijf ibwdj ijjbfjwe jibfef buebf",
-  //     image: "/pizza-main.png",
-  //     price: 800
-  //   },
-  //   {
-  //     _id: "2",
-  //     name: "Pepporoni pizza",
-  //     description: "This is a delicious pizza",
-  //     image: "/pizza-main.png",
-  //     price: 800
-  //   },
-  //   {
-  //     _id: "3",
-  //     name: "Spinach pizza",
-  //     description: "This is a delicious pizza",
-  //     image: "/pizza-main.png",
-  //     price: 800
-  //   },
-  //   {
-  //     _id: "4",
-  //     name: "Corn pizza",
-  //     description: "This is a delicious pizza",
-  //     image: "/pizza-main.png",
-  //     price: 800
-  //   },
-  //   {
-  //     _id: "5",
-  //     name: "Chicken pizza",
-  //     description: "This is a delicious pizza",
-  //     image: "/pizza-main.png",
-  //     price: 800
-  //   },
-  //   {
-  //     _id: "6",
-  //     name: "Special pizza",
-  //     description: "This is a delicious pizza",
-  //     image: "/pizza-main.png",
-  //     price: 800
-  //   },
-  // ]
+export default async function Home({ searchParams }: { searchParams: { restaurant: string } }) {
 
   return (
     <>
@@ -69,7 +25,7 @@ export default async function Home() {
       </section>
 
       <Suspense fallback={<div className="container">Loading</div>}>
-        <ProductList />
+        <ProductList searchParams={searchParams} />
       </Suspense>
     </>
   )

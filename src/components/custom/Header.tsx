@@ -1,10 +1,9 @@
 import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import Link from 'next/link'
 import { Phone } from 'lucide-react'
 import { Button } from '../ui/button'
-import { Tenant } from '@/lib/types'
 import ClientCounterComponent from './counter-client-component'
+import TenantSelect from './tenant-select'
 
 // const CartCounterWithoutSSR = dynamic(() => import('./cart-counter'), { ssr: false })
 
@@ -38,21 +37,9 @@ const Header = async () => {
                             fill="#484848"
                         />
                     </svg>
-                    <Select>
-                        <SelectTrigger className="w-[180px] focus:ring-0">
-                            <SelectValue placeholder="Select Restaurant" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-60 overflow-y-auto">
-                            {
-                                tenants.map((tenant: Tenant) => {
-                                    return (
-                                        <SelectItem key={tenant.id} value={tenant.id}>{tenant.name}</SelectItem>
-                                    )
-                                })
-                            }
 
-                        </SelectContent>
-                    </Select>
+                    <TenantSelect tenants={tenants}/>
+               
                 </div>
 
                 <div className='flex items-center gap-4'>
