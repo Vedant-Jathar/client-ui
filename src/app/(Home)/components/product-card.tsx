@@ -2,14 +2,13 @@ import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, } from "@/components/ui/card"
 import Image from 'next/image'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-
 import { Product } from '@/lib/types'
 import ProductModal from './product-modal'
 
-
-
-
 const ProductCard = ({ product }: { product: Product }) => {
+
+    const lowestPrice = (Object.entries(product.priceConfiguration).filter(([key, value]) => value.priceType === "base")).reduce((acc, [key, value]) => acc + Math.min(...Object.values(value.availableOptions)), 0)
+
     return (
         <Card>
 
@@ -37,10 +36,10 @@ const ProductCard = ({ product }: { product: Product }) => {
                 <CardFooter className='flex items-center justify-between'>
                     <p>
                         <span>From</span>
-                        <span className='ml-[5px]'>₹400</span>
+                        <span className='ml-[5px]'>₹{lowestPrice}</span>
                     </p>
 
-                    <ProductModal product={product}/>
+                    <ProductModal product={product} />
 
                 </CardFooter>
             </div>
