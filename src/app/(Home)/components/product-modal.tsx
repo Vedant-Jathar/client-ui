@@ -11,6 +11,8 @@ import { ShoppingCart } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks/hooks'
 import { addtoCart, CartItem } from '@/lib/store/features/Cart/cartSlice'
 import CryptoJS from 'crypto-js'
+import { toast } from 'sonner'
+import Toast from './toast'
 
 type chosenConfig = {
     [key: string]: string
@@ -18,6 +20,7 @@ type chosenConfig = {
 
 const ProductModal = ({ product }: { product: Product }) => {
 
+    // CartItem:
     //  { product: {
     //       _id: '68765ccac09900475ba13a1e',
     //       name: 'Smoky Chicken pizza',
@@ -126,6 +129,8 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
 
+
+
     const dispatch = useAppDispatch()
 
     const cartItems = useAppSelector(state => state.cart.cartItems)
@@ -198,7 +203,6 @@ const ProductModal = ({ product }: { product: Product }) => {
 
 
     const handleAddToCart = (product: Product) => {
-
         const itemToAdd: CartItem = {
             product,
             chosenConfig: {
@@ -208,9 +212,10 @@ const ProductModal = ({ product }: { product: Product }) => {
         }
 
         dispatch(addtoCart(itemToAdd))
-
+        setSelectedToppings([])
         setDialogOpen(false)
 
+        toast(<Toast type='success' message='Added to Cart' />)
     }
 
     const handleValueChange = (key: string, value: string) => {
@@ -235,13 +240,12 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     }, [])
 
-    console.log("open", open);
 
     return (
-        <Dialog 
+        <Dialog
             open={dialogOpen}
-            onOpenChange={() => {
-                if (!open) {
+            onOpenChange={(isOpen) => {
+                if (!isOpen) {
                     setSelectedToppings([])
                 }
                 setDialogOpen(prev => !prev)
