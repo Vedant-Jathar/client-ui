@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks/hooks'
 import { addtoCart, CartItem } from '@/lib/store/features/Cart/cartSlice'
-import { DialogTitle } from '@radix-ui/react-dialog'
 import CryptoJS from 'crypto-js'
 
 type chosenConfig = {
@@ -125,7 +124,7 @@ const ProductModal = ({ product }: { product: Product }) => {
     //     }
     //   },
 
-    const [open, setOpen] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(false)
 
     const dispatch = useAppDispatch()
 
@@ -210,6 +209,8 @@ const ProductModal = ({ product }: { product: Product }) => {
 
         dispatch(addtoCart(itemToAdd))
 
+        setDialogOpen(false)
+
     }
 
     const handleValueChange = (key: string, value: string) => {
@@ -237,13 +238,15 @@ const ProductModal = ({ product }: { product: Product }) => {
     console.log("open", open);
 
     return (
-        <Dialog onOpenChange={() => {
-            if (!open) {
-                setSelectedToppings([])
+        <Dialog 
+            open={dialogOpen}
+            onOpenChange={() => {
+                if (!open) {
+                    setSelectedToppings([])
+                }
+                setDialogOpen(prev => !prev)
             }
-            setOpen(prev => !prev)
-        }
-        }>
+            }>
             <DialogTrigger className="bg-orange-200 hover:bg-orange-300 text-orange-600 py-2 px-6 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150">Choose</DialogTrigger>
 
             <DialogContent className='p-0'>
