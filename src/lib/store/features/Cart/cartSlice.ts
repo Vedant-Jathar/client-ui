@@ -1,5 +1,7 @@
 import { Product, Topping } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import CryptoJS from 'crypto-js'
+
 
 export interface CartItem {
     product: Product
@@ -8,7 +10,8 @@ export interface CartItem {
             [key: string]: string
         }
         selectedToppings: Topping[]
-    }
+    },
+    hash?: string
 }
 
 type CartState = {
@@ -24,11 +27,12 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addtoCart: (state, action: PayloadAction<CartItem>) => {
-            const localStorageCartIems = JSON.stringify([...state.cartItems, action.payload])
+            const hash = CryptoJS.SHA256(JSON.stringify(action.payload)).toString()
+            const localStorageCartIems = JSON.stringify([...state.cartItems, { ...action.payload, hash }])
             if (typeof window !== undefined && window.localStorage) {
                 window.localStorage.setItem("CartItems", localStorageCartIems)
             }
-            state.cartItems.push(action.payload);
+            state.cartItems.push({ ...action.payload, hash });
         },
 
         setInitialCartItems: (state, action: PayloadAction<CartItem[]>) => {

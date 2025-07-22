@@ -1,6 +1,5 @@
 import { Topping } from "@/lib/types"
 import { Button } from "@/components/ui/button"
-import { CircleCheck } from "lucide-react"
 import Image from "next/image"
 
 type propTypes = {

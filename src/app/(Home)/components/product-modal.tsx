@@ -1,5 +1,4 @@
 "use client"
-
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -9,9 +8,10 @@ import React, { startTransition, Suspense, useEffect, useMemo, useState } from '
 import { ToppingsList } from './toppings-list'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
-import { useAppDispatch } from '@/lib/store/hooks/hooks'
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks/hooks'
 import { addtoCart, CartItem } from '@/lib/store/features/Cart/cartSlice'
 import { DialogTitle } from '@radix-ui/react-dialog'
+import CryptoJS from 'crypto-js'
 
 type chosenConfig = {
     [key: string]: string
@@ -19,7 +19,117 @@ type chosenConfig = {
 
 const ProductModal = ({ product }: { product: Product }) => {
 
+    //  { product: {
+    //       _id: '68765ccac09900475ba13a1e',
+    //       name: 'Smoky Chicken pizza',
+    //       description: 'This is never seen before epizza',
+    //       image: 'https://pizza-delivery-app-mern.s3.eu-north-1.amazonaws.com/4e63a6ec-e0f0-4640-aa9a-7ab74bbc1256',
+    //       priceConfiguration: {
+    //         Size: {
+    //           priceType: 'base',
+    //           availableOptions: {
+    //             Small: 1,
+    //             Medium: 2,
+    //             Large: 3
+    //           },
+    //           _id: '687cc010c97b73ded2cbf968'
+    //         },
+    //         Crust: {
+    //           priceType: 'additional',
+    //           availableOptions: {
+    //             Thin: 3,
+    //             Thick: 4
+    //           },
+    //           _id: '687cc010c97b73ded2cbf969'
+    //         }
+    //       },
+    //       attributes: [
+    //         {
+    //           name: 'isHit',
+    //           value: 'Yes',
+    //           _id: '687cc010c97b73ded2cbf965'
+    //         },
+    //         {
+    //           name: 'Alcohol',
+    //           value: 'Non-Alcoholic',
+    //           _id: '687cc010c97b73ded2cbf966'
+    //         },
+    //         {
+    //           name: 'Spiciness',
+    //           value: 'Hot',
+    //           _id: '687cc010c97b73ded2cbf967'
+    //         }
+    //       ],
+    //       tenantId: 6,
+    //       categoryId: '687544aadf99f9663ee0346f',
+    //       isPublished: true,
+    //       createdAt: '2025-07-15T13:51:06.487Z',
+    //       updatedAt: '2025-07-20T10:08:16.241Z',
+    //       __v: 0,
+    //       category: {
+    //         _id: '687544aadf99f9663ee0346f',
+    //         name: 'Pizza',
+    //         priceConfiguration: {
+    //           Size: {
+    //             priceType: 'base',
+    //             availableOptions: [
+    //               'Small',
+    //               'Medium',
+    //               'Large'
+    //             ],
+    //             _id: '687544aadf99f9663ee03470'
+    //           },
+    //           Crust: {
+    //             priceType: 'additional',
+    //             availableOptions: [
+    //               'Thin',
+    //               'Thick'
+    //             ],
+    //             _id: '687544aadf99f9663ee03471'
+    //           }
+    //         },
+    //         attributes: [
+    //           {
+    //             name: 'isHit',
+    //             widgetType: 'switch',
+    //             availableOptions: [
+    //               'Yes',
+    //               'No'
+    //             ],
+    //             defaultValue: 'No',
+    //             _id: '687544aadf99f9663ee03472'
+    //           },
+    //           {
+    //             name: 'Spiciness',
+    //             widgetType: 'radio',
+    //             availableOptions: [
+    //               'Less',
+    //               'Medium',
+    //               'Hot'
+    //             ],
+    //             defaultValue: 'Medium',
+    //             _id: '687544aadf99f9663ee03473'
+    //           }
+    //         ],
+    //         createdAt: '2025-07-14T17:55:54.183Z',
+    //         updatedAt: '2025-07-14T17:55:54.183Z',
+    //         __v: 0
+    //       }
+    //     },
+    //     chosenConfig: {
+    //       priceConfig: {
+    //         Size: 'Small',
+    //         Crust: 'Thin'
+    //       },
+    //       selectedToppings: []
+    //     }
+    //   },
+
+    const [open, setOpen] = useState(false)
+
     const dispatch = useAppDispatch()
+
+    const cartItems = useAppSelector(state => state.cart.cartItems)
 
     const [toppings, setToppings] = useState<Topping[]>([])
 
@@ -35,53 +145,41 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     const [selectedToppings, setSelectedToppings] = useState<Topping[]>([])
 
+    console.log("selectedToppings", selectedToppings);
+
     const handleCheckboxCheck = (topping: Topping) => {
         const isAlreadyExisting = selectedToppings.some((element) => element._id === topping._id)
 
         startTransition(() => {
             if (isAlreadyExisting) {
-                setSelectedToppings(prev => prev.filter(element => element._id !== topping._id))
+                setSelectedToppings(prev =>
+                    prev.filter(element => element._id !== topping._id).sort((a, b) => a.name.localeCompare(b.name))
+                )
                 return
             }
-            setSelectedToppings(prev => [...prev, topping])
+            setSelectedToppings(prev => [...prev, topping].sort((a, b) => a.name.localeCompare(b.name)))
         })
-
     }
 
-    // {
-    // "_id": "687b9ba78cc6886eb2f0483a",
-    // "name": "Jelapeno Pizza",
-    // "description": "This is the best pizza in town",
-    // "image": "https://pizza-delivery-app-mern.s3.eu-north-1.amazonaws.com/3066a46c-0559-444a-897f-14b67209fcd4",
-    // "priceConfiguration": {
-    //     "Size": {
-    //         "priceType": "base",
-    //         "availableOptions": {
-    //             "Small": 10,
-    //             "Medium": 20,
-    //             "Large": 30
-    //         },
-    //         "_id": "687b9ba78cc6886eb2f0483b"
-    //     },
-    //     "Crust": {
-    //         "priceType": "additional",
-    //         "availableOptions": {
-    //             "Thin": 40,
-    //             "Thick": 50
-    //         },
-    //         "_id": "687b9ba78cc6886eb2f0483c"
-    //     }
-    // },
+    const alreadyInCart = useMemo(() => {
+        const currentConfig: CartItem = {
+            product,
+            chosenConfig: {
+                priceConfig: chosenConfig,
+                selectedToppings
+            }
+        }
+        const currentConfigString = JSON.stringify(currentConfig)
+        const hash = CryptoJS.SHA256(currentConfigString).toString()
 
+        console.log("currentConfig", currentConfig);
 
-    // chosenConfig: {
-    //   size: "small",
-    //   crust: "thin"
-    // }
+        console.log("alreadyInCart:", cartItems.some((cartItem) => cartItem.hash === hash));
+        console.log("hash", hash);
 
-    // [[size, "small"], [crust, "thin"]]
+        return cartItems.some((cartItem) => cartItem.hash === hash)
 
-
+    }, [chosenConfig, selectedToppings, product, cartItems])
 
     const totalPrice = useMemo(() => {
 
@@ -132,10 +230,20 @@ const ProductModal = ({ product }: { product: Product }) => {
             setToppings(toppingsList)
         }
         fetchData()
+
+
     }, [])
 
+    console.log("open", open);
+
     return (
-        <Dialog>
+        <Dialog onOpenChange={() => {
+            if (!open) {
+                setSelectedToppings([])
+            }
+            setOpen(prev => !prev)
+        }
+        }>
             <DialogTrigger className="bg-orange-200 hover:bg-orange-300 text-orange-600 py-2 px-6 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150">Choose</DialogTrigger>
 
             <DialogContent className='p-0'>
@@ -191,13 +299,16 @@ const ProductModal = ({ product }: { product: Product }) => {
                             </Suspense>
                         </div>
 
-                        <div className='flex items-center justify-between mt-12'>
+                        <div className={`flex items-center justify-between mt-12`}>
                             <span className='font-semibold'>&#8377;{totalPrice}</span>
-                            <Button onClick={() => {
-                                handleAddToCart(product)
-                            }}>
+                            <Button
+                                className={`${alreadyInCart ? "bg-gray-600" : "bg-primary"}`}
+                                disabled={alreadyInCart}
+                                onClick={() => {
+                                    handleAddToCart(product)
+                                }}>
                                 <ShoppingCart />
-                                <span>Add to Cart</span>
+                                <span>{alreadyInCart ? "Already in Cart" : "Add to Cart"}</span>
                             </Button>
                         </div>
 
