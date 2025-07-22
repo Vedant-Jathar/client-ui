@@ -2,7 +2,7 @@
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import { Tenant } from '@/lib/types'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const TenantSelect = ({ tenants }: { tenants: Tenant[] }) => {
     const router = useRouter()
@@ -10,9 +10,12 @@ const TenantSelect = ({ tenants }: { tenants: Tenant[] }) => {
         router.push(`/?restaurant=${value}`)
     }
 
+    const searchParams = useSearchParams()
+
     return (
         <Select
             onValueChange={handleTenantChange}
+            defaultValue={searchParams.get("restaurant") || ""}
         >
             <SelectTrigger className="w-[180px] focus:ring-0">
                 <SelectValue placeholder="Select Restaurant" />
@@ -21,7 +24,7 @@ const TenantSelect = ({ tenants }: { tenants: Tenant[] }) => {
                 {
                     tenants.map((tenant: Tenant) => {
                         return (
-                            <SelectItem key={tenant.id} value={tenant.id}>{tenant.name}</SelectItem>
+                            <SelectItem key={tenant.id} value={String(tenant.id)}>{tenant.name}</SelectItem>
                         )
                     })
                 }

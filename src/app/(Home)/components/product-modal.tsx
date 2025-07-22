@@ -13,6 +13,7 @@ import { addtoCart, CartItem } from '@/lib/store/features/Cart/cartSlice'
 import CryptoJS from 'crypto-js'
 import { toast } from 'sonner'
 import Toast from './toast'
+import { useSearchParams } from 'next/navigation'
 
 type chosenConfig = {
     [key: string]: string
@@ -129,7 +130,7 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
 
-
+    const searchParams = useSearchParams()
 
     const dispatch = useAppDispatch()
 
@@ -229,8 +230,8 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const toppingsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/api/catalog/toppings?tenantId=7`)
-
+            const toppingsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/api/catalog/toppings?tenantId=${searchParams.get("restaurant")}`)
+            
             const toppingsList = await toppingsResponse.json()
 
             setToppings(toppingsList)

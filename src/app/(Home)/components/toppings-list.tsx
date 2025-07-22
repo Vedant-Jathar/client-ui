@@ -12,7 +12,6 @@ export type toppingListProps = {
 export const ToppingsList = ({ toppings, selectedToppings, handleCheckboxCheck }: toppingListProps) => {
 
 
-
     return (
         <>
             <h4 className="mb-2">Extra Toppings</h4>
