@@ -51,6 +51,7 @@ export type Product = {
     attributes: ProductAttribute[];
     isPublish: boolean;
     createdAt: string;
+    updatedAt: string
 };
 
 

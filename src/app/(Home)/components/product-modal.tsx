@@ -101,7 +101,7 @@ const ProductModal = ({ product }: { product: Product }) => {
 
     const handleAddToCart = (product: Product) => {
         const itemToAdd: CartItem = {
-            product,
+            product: product,
             chosenConfig: {
                 priceConfig: chosenConfig,
                 selectedToppings

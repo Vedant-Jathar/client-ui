@@ -10,6 +10,8 @@ import { ArrowRight } from 'lucide-react'
 const CartItems = () => {
     const cartItems = useAppSelector(state => state.cart.cartItems)
 
+    const totalCartPrice = cartItems.reduce((acc, curr) => acc + (curr.pricePerUnit! * curr.qty!), 0)
+
     // const searchParams = useSearchParams()
 
     if (!cartItems.length) {
@@ -32,7 +34,10 @@ const CartItems = () => {
                 })
             }
             <div className='flex items-center justify-between'>
-                <span className='text-[20px] font-semibold'><span className='mr-0.5'>&#8377;</span>8900</span>
+                <span className='text-[22px] font-bold pl-7'>
+                    <span className='mr-0.5'>&#8377;</span>
+                    {totalCartPrice}
+                </span>
                 <Button className='text-[18px]'>
                     Checkout
                     <ArrowRight size={16} className='ml-0.5' />
