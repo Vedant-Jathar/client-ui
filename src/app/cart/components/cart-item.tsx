@@ -1,14 +1,16 @@
-import type { CartItem } from '@/lib/store/features/Cart/cartSlice'
+import { handleQuantityChange, type CartItem } from '@/lib/store/features/Cart/cartSlice'
 import Image from 'next/image'
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import QuantityChanger from './quantity-changer'
+import { useAppDispatch } from '@/lib/store/hooks/hooks'
 
 type props = {
     item: CartItem
 }
 
 const CartItem = ({ item }: props) => {
+    const dispatch = useAppDispatch()
     return (
         <div className='grid grid-cols-2'>
             <div className='flex items-center'>
@@ -35,7 +37,12 @@ const CartItem = ({ item }: props) => {
                 </div>
                 <div>
                     <span className='text-[17px] font-semibold'><span className='mr-0.5'>&#8377;</span>{item.qty! * item.pricePerUnit!}</span>
-                    <button className='ml-8'>X</button>
+                    <button
+                        className='ml-8'
+                        onClick={() => {
+                            dispatch(handleQuantityChange({ hash: item.hash as string, change: 0 }))
+                        }}
+                    >X</button>
                 </div>
 
             </div>
