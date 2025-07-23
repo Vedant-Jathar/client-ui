@@ -21,113 +21,6 @@ type chosenConfig = {
 
 const ProductModal = ({ product }: { product: Product }) => {
 
-    // CartItem:
-    //  { product: {
-    //       _id: '68765ccac09900475ba13a1e',
-    //       name: 'Smoky Chicken pizza',
-    //       description: 'This is never seen before epizza',
-    //       image: 'https://pizza-delivery-app-mern.s3.eu-north-1.amazonaws.com/4e63a6ec-e0f0-4640-aa9a-7ab74bbc1256',
-    //       priceConfiguration: {
-    //         Size: {
-    //           priceType: 'base',
-    //           availableOptions: {
-    //             Small: 1,
-    //             Medium: 2,
-    //             Large: 3
-    //           },
-    //           _id: '687cc010c97b73ded2cbf968'
-    //         },
-    //         Crust: {
-    //           priceType: 'additional',
-    //           availableOptions: {
-    //             Thin: 3,
-    //             Thick: 4
-    //           },
-    //           _id: '687cc010c97b73ded2cbf969'
-    //         }
-    //       },
-    //       attributes: [
-    //         {
-    //           name: 'isHit',
-    //           value: 'Yes',
-    //           _id: '687cc010c97b73ded2cbf965'
-    //         },
-    //         {
-    //           name: 'Alcohol',
-    //           value: 'Non-Alcoholic',
-    //           _id: '687cc010c97b73ded2cbf966'
-    //         },
-    //         {
-    //           name: 'Spiciness',
-    //           value: 'Hot',
-    //           _id: '687cc010c97b73ded2cbf967'
-    //         }
-    //       ],
-    //       tenantId: 6,
-    //       categoryId: '687544aadf99f9663ee0346f',
-    //       isPublished: true,
-    //       createdAt: '2025-07-15T13:51:06.487Z',
-    //       updatedAt: '2025-07-20T10:08:16.241Z',
-    //       __v: 0,
-    //       category: {
-    //         _id: '687544aadf99f9663ee0346f',
-    //         name: 'Pizza',
-    //         priceConfiguration: {
-    //           Size: {
-    //             priceType: 'base',
-    //             availableOptions: [
-    //               'Small',
-    //               'Medium',
-    //               'Large'
-    //             ],
-    //             _id: '687544aadf99f9663ee03470'
-    //           },
-    //           Crust: {
-    //             priceType: 'additional',
-    //             availableOptions: [
-    //               'Thin',
-    //               'Thick'
-    //             ],
-    //             _id: '687544aadf99f9663ee03471'
-    //           }
-    //         },
-    //         attributes: [
-    //           {
-    //             name: 'isHit',
-    //             widgetType: 'switch',
-    //             availableOptions: [
-    //               'Yes',
-    //               'No'
-    //             ],
-    //             defaultValue: 'No',
-    //             _id: '687544aadf99f9663ee03472'
-    //           },
-    //           {
-    //             name: 'Spiciness',
-    //             widgetType: 'radio',
-    //             availableOptions: [
-    //               'Less',
-    //               'Medium',
-    //               'Hot'
-    //             ],
-    //             defaultValue: 'Medium',
-    //             _id: '687544aadf99f9663ee03473'
-    //           }
-    //         ],
-    //         createdAt: '2025-07-14T17:55:54.183Z',
-    //         updatedAt: '2025-07-14T17:55:54.183Z',
-    //         __v: 0
-    //       }
-    //     },
-    //     chosenConfig: {
-    //       priceConfig: {
-    //         Size: 'Small',
-    //         Crust: 'Thin'
-    //       },
-    //       selectedToppings: []
-    //     }
-    //   },
-
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const searchParams = useSearchParams()
@@ -166,28 +59,7 @@ const ProductModal = ({ product }: { product: Product }) => {
         })
     }
 
-    const alreadyInCart = useMemo(() => {
-        const currentConfig: CartItem = {
-            product,
-            chosenConfig: {
-                priceConfig: chosenConfig,
-                selectedToppings
-            }
-        }
-        const currentConfigString = JSON.stringify(currentConfig)
-        const hash = CryptoJS.SHA256(currentConfigString).toString()
-
-        console.log("currentConfig", currentConfig);
-
-        console.log("alreadyInCart:", cartItems.some((cartItem) => cartItem.hash === hash));
-        console.log("hash", hash);
-
-        return cartItems.some((cartItem) => cartItem.hash === hash)
-
-    }, [chosenConfig, selectedToppings, product, cartItems])
-
     const totalPrice = useMemo(() => {
-
         let price = 0
         Object.entries(chosenConfig).forEach(([key, value]) => {
             Object.entries(product.priceConfiguration).forEach(([Key, Value]) => {
@@ -202,6 +74,30 @@ const ProductModal = ({ product }: { product: Product }) => {
         return price
     }, [chosenConfig, selectedToppings, product])
 
+    const alreadyInCart = useMemo(() => {
+        const currentConfig: CartItem = {
+            product,
+            chosenConfig: {
+                priceConfig: chosenConfig,
+                selectedToppings
+            },
+            qty: 1,
+            pricePerUnit: totalPrice
+        }
+        console.log("currentConfig", currentConfig);
+
+        const currentConfigString = JSON.stringify(currentConfig)
+        const hash = CryptoJS.SHA256(currentConfigString).toString()
+
+        console.log("hash", hash);
+
+
+        return cartItems.some((cartItem) => cartItem.hash === hash)
+
+    }, [chosenConfig, selectedToppings, product, cartItems])
+
+
+
 
     const handleAddToCart = (product: Product) => {
         const itemToAdd: CartItem = {
@@ -209,7 +105,9 @@ const ProductModal = ({ product }: { product: Product }) => {
             chosenConfig: {
                 priceConfig: chosenConfig,
                 selectedToppings
-            }
+            },
+            qty: 1,
+            pricePerUnit: totalPrice
         }
 
         dispatch(addtoCart(itemToAdd))
@@ -231,7 +129,7 @@ const ProductModal = ({ product }: { product: Product }) => {
     useEffect(() => {
         const fetchData = async () => {
             const toppingsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL}/api/catalog/toppings?tenantId=${searchParams.get("restaurant")}`)
-            
+
             const toppingsList = await toppingsResponse.json()
 
             setToppings(toppingsList)

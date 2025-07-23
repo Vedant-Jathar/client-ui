@@ -12,6 +12,8 @@ export interface CartItem {
         selectedToppings: Topping[]
     },
     hash?: string
+    qty?: number
+    pricePerUnit?: number
 }
 
 type CartState = {
@@ -37,11 +39,19 @@ export const cartSlice = createSlice({
 
         setInitialCartItems: (state, action: PayloadAction<CartItem[]>) => {
             state.cartItems = action.payload
+        },
+
+        handleQuantityChange: (state, action: PayloadAction<{ hash: string, change: number }>) => {
+            const indexOfCartItem = state.cartItems.findIndex((item) => item.hash === action.payload.hash)
+
+            state.cartItems[indexOfCartItem].qty = Math.max(1, state.cartItems[indexOfCartItem].qty! + action.payload.change)
+
+            window.localStorage.setItem('CartItems', JSON.stringify(state.cartItems))
         }
     }
 })
 
-export const { addtoCart, setInitialCartItems } = cartSlice.actions
+export const { addtoCart, setInitialCartItems, handleQuantityChange } = cartSlice.actions
 
 export default cartSlice.reducer
 

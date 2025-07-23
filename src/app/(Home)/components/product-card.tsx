@@ -33,10 +33,12 @@ const ProductCard = ({ product }: { product: Product }) => {
                         </TooltipContent>
                     </Tooltip>
                 </CardContent>
-                <CardFooter className='flex items-center justify-between'>
+                <CardFooter className='flex items-center justify-between mt-6'>
                     <p>
                         <span>From</span>
-                        <span className='ml-[5px]'>₹{lowestPrice}</span>
+                        <span className='ml-[5px] font-semibold text-[18px]'>
+                            <span className='mr-0.5'>₹</span>{lowestPrice}
+                        </span>
                     </p>
 
                     <ProductModal product={product} />
