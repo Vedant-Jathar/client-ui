@@ -4,10 +4,18 @@ import { Phone } from 'lucide-react'
 import { Button } from '../ui/button'
 import ClientCounterComponent from './counter-client-component'
 import TenantSelect from './tenant-select'
+import { getSession } from '@/lib/session'
+import LogoutButton from './LogoutButton'
 
 // const CartCounterWithoutSSR = dynamic(() => import('./cart-counter'), { ssr: false })
 
 const Header = async () => {
+
+    const session = await getSession()
+
+    if (!session) {
+        return null
+    }
 
     const tenantsResponse = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/auth/tenants/all`, {
         next: {
@@ -19,6 +27,7 @@ const Header = async () => {
         throw Error("Failed to load tenants")
     }
     const tenants = await tenantsResponse.json()
+
 
     return (
         <header className="bg-white">
@@ -38,8 +47,8 @@ const Header = async () => {
                         />
                     </svg>
 
-                    <TenantSelect tenants={tenants}/>
-               
+                    <TenantSelect tenants={tenants} />
+
                 </div>
 
                 <div className='flex items-center gap-4'>
@@ -53,9 +62,13 @@ const Header = async () => {
                     <div className='flex items-center ml-12'>
                         <Phone /> <span className='ml-2'>9867567845</span>
                     </div>
-                    <Button size={'sm'}>
-                        Logout
-                    </Button>
+                    {
+                        session ?
+                            <LogoutButton /> :
+                            <Button className='w-[100px]'>
+                                <Link href={"/login"}>Login</Link>
+                            </Button>
+                    }
                 </div>
             </nav>
         </header>

@@ -65,7 +65,6 @@ export async function login(prevState: any, formData: FormData) {
         }
 
     } catch (error) {
-        console.log(error);
         return {
             type: "error",
             message: "Login failed"

@@ -38,11 +38,10 @@ const Login = () => {
     if (state.type === "Success") {
         window.location.href = "/"
     }
-
-
+    
     return (
         <div>
-            <div className='container flex gap-4 p-5'>
+            <div className='container flex gap-4 p-5 pt-20'>
                 <div className='w-1/2 flex flex-col items-center justify-center'>
                     <h1 className='text-2xl mb-8'>Login</h1>
                     <form action={formAction} className='flex flex-col gap-4 justify-center items-center'>
