@@ -4,10 +4,8 @@ import cookie from "cookie"
 import { cookies } from "next/headers"
 
 export async function login(prevState: any, formData: FormData) {
-
     const email = formData.get("email")
     const password = formData.get("password")
-
 
     try {
         const response = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/auth/auth/login`, {
@@ -27,7 +25,7 @@ export async function login(prevState: any, formData: FormData) {
 
             return {
                 type: "error",
-                message: "Login failed"
+                message: error.errors[0].message
             }
         }
 
@@ -70,7 +68,7 @@ export async function login(prevState: any, formData: FormData) {
         console.log(error);
         return {
             type: "error",
-            message: (error as Error).message
+            message: "Login failed"
         }
     }
 }

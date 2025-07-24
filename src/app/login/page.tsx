@@ -7,15 +7,38 @@ import React, { useActionState } from 'react'
 import { login } from '@/lib/actions/login'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { useFormStatus } from 'react-dom'
+import { LoaderCircle } from 'lucide-react'
 
 const initialState = {
     type: "",
     message: ""
 }
 
+const SubmitButton = () => {
+    const { pending } = useFormStatus()
+
+    return (
+        <Button className='w-[300px] mt-4' disabled={pending}>
+            {
+                pending ?
+                    <div className='flex items-center gap-2'>
+                        <LoaderCircle className='animate-spin' />
+                        <span>Please wait</span>
+                    </div> : "Login"
+            }
+        </Button>
+    )
+}
+
 const Login = () => {
     const [state, formAction] = useActionState(login, initialState)
     // console.log("state", state);
+
+    if (state.type === "Success") {
+        window.location.href = "/"
+    }
+
 
     return (
         <div>
@@ -31,8 +54,9 @@ const Login = () => {
                             <Label htmlFor='password' className='mb-2'>Password</Label>
                             <Input id="password" type='password' name='password' className='bg-white w-[300px]' />
                         </div>
-                        {state.type === "error" && <p className='text-red-700'>Invalid credentials</p>}
-                        <Button className='w-[300px] mt-4'>Login</Button>
+                        {state.type === "error" && <p className='text-red-700'>{state.message}</p>}
+                        {state.type === "Success" && <p className='text-green-700'>{state.message}</p>}
+                        <SubmitButton />
                     </form>
                     <p className='mt-4'>Dont have an account?<Link href={"/signup"} className='text-primary ml-1 text-[18px]'>Signup</Link></p>
                 </div>
