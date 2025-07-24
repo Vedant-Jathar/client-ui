@@ -5,7 +5,7 @@ import ProductList from "./components/product-list";
 import { getSession } from "@/lib/session";
 
 export default async function Home({ searchParams }: { searchParams: { restaurant: string } }) {
-
+  
   return (
     <>
       <section className="bg-white">

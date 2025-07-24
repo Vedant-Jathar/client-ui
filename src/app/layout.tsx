@@ -6,8 +6,7 @@ import { cn } from "@/lib/utils";
 import StoreProvider from "./StoreProvider";
 import Header from "@/components/custom/Header";
 import { Toaster } from "sonner";
-import { getSession } from "@/lib/session";
-
+import Refresher from "@/components/custom/Refresher";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -34,10 +33,13 @@ export default async function RootLayout({
             manrope.variable
           )}
         >
-          <Header/>
-          {children}
-          <Toaster />
+          <Refresher>
+            <Header />
+            {children}
+            <Toaster />
+          </Refresher>
         </body>
+    
       </StoreProvider>
     </html>
   );

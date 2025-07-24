@@ -13,9 +13,9 @@ const Header = async () => {
 
     const session = await getSession()
 
-    if (!session) {
-        return null
-    }
+    // if (!session) {
+    //     return null
+    // }
 
     const tenantsResponse = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/auth/tenants/all`, {
         next: {
