@@ -17,12 +17,12 @@ export async function POST() {
         )
 
         if (!response.ok) {
-            console.log("refresh failed");
+            console.log("");
             return
         }
 
+        // Now setting the cookies recieved from the backend in the client 
         const cookiesArray = response.headers.getSetCookie()
-
         const accessToken = cookiesArray.find((c) => c.startsWith("accessToken"))
         const refreshToken = cookiesArray.find((c) => c.startsWith("refreshToken"))
 

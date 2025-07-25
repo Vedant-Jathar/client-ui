@@ -5,7 +5,7 @@ interface Session {
     user: User
 }
 
-interface User {
+export interface User {
     id: number
     firstName: string
     lastName: string

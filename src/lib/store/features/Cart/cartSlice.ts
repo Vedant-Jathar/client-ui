@@ -2,7 +2,6 @@ import { Product, Topping } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import CryptoJS from 'crypto-js'
 
-
 export interface CartItem {
     product: Product
     chosenConfig: {

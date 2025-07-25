@@ -14,8 +14,6 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
 
     const startRefresh = useCallback(async () => {
         try {
-            console.log("timeouId.current", timeoutId.current);
-
             if (timeoutId.current) {
                 clearTimeout(timeoutId.current)
             }
@@ -32,10 +30,6 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
             const tokenExpiryTime = decodedToken.exp! * 1000
             const refreshTime = tokenExpiryTime - currentTime - 5000
 
-            console.log("currentTime", new Date(currentTime));
-            console.log("tokenExpiryTime", new Date(tokenExpiryTime));
-            console.log("refreshTime", new Date(tokenExpiryTime - 5000));
-            console.log("refreshTime", refreshTime);
 
             const refreshAccessToken = async () => {
                 const response = await fetch('/api/auth/refresh', { method: "POST" })
