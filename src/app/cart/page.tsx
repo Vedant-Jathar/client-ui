@@ -1,7 +1,12 @@
 import React from 'react'
 import CartItems from './components/cart-items'
+import { serialize } from 'v8'
 
-const Cart = () => {
+const Cart = ({ searchParams }: { searchParams: { restaurant: string } }) => {
+
+    const queryString = new URLSearchParams(searchParams).toString()
+    console.log("queryString in Cart", queryString);
+
     return (
         <>
             {/* <div className='container'>
@@ -36,7 +41,7 @@ const Cart = () => {
             )
 
         })}
-             </div> */}           
+             </div> */}
             <section>
                 <div className='container mx-auto py-6'>
                     <h1 className='font-semibold text-2xl'>Shopping cart</h1>

@@ -12,7 +12,7 @@ const CartItems = () => {
 
     const totalCartPrice = cartItems.reduce((acc, curr) => acc + (curr.pricePerUnit! * curr.qty!), 0)
 
-    // const searchParams = useSearchParams()
+    const searchParams = useSearchParams()
 
     if (!cartItems.length) {
         return (
@@ -38,10 +38,13 @@ const CartItems = () => {
                     <span className='mr-0.5'>&#8377;</span>
                     {totalCartPrice}
                 </span>
-                <Button className='text-[18px]'>
-                    Checkout
-                    <ArrowRight size={16} className='ml-0.5' />
-                </Button>
+                <Link href={`/checkout?restaurant=${searchParams.get("restaurant")}`}>
+                    <Button className='text-[18px]'>
+                        Checkout
+                        <ArrowRight size={16} className='ml-0.5' />
+                    </Button>
+                </Link>
+
             </div>
         </div>
     )
