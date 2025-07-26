@@ -4,13 +4,18 @@ import React from 'react'
 
 const Checkout = async ({ searchParams }: { searchParams: { restaurant: string } }) => {
 
-    const queryString = new URLSearchParams(searchParams).toString()
-    console.log("queryString", queryString);
+    const sParams = new URLSearchParams(searchParams)
+    const existingQueryParamsStr = sParams.toString()
+
+
+    sParams.append("return-to", `/checkout?${existingQueryParamsStr}`)
+    
+    console.log("sParams", sParams);
 
     const session = await getSession()
 
     if (!session) {
-        return redirect(`/login?${queryString}`)
+        return redirect(`/login?${sParams}`)
     }
 
     return (

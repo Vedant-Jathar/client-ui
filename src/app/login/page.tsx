@@ -7,6 +7,7 @@ import React, { useActionState } from 'react'
 import { login } from '@/lib/actions/login'
 import Image from 'next/image'
 import FormSubmitButton from '@/components/custom/form-submit-button'
+import { useSearchParams } from 'next/navigation'
 
 const initialState = {
     type: "",
@@ -16,10 +17,13 @@ const initialState = {
 const Login = () => {
     const [state, formAction] = useActionState(login, initialState)
 
+    const searchParams = useSearchParams()
+    const returnTo = searchParams.get("return-to")
+
     if (state.type === "Success") {
-        window.location.href = "/"
+        window.location.href = returnTo ? returnTo : "/"
     }
-    
+
     return (
         <div>
             <div className='container flex gap-4 p-5 pt-20'>
