@@ -13,17 +13,9 @@ import { RadioGroupItem } from '@/components/ui/radio-group'
 import { Coins, CreditCard } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import OrderSummary from './orderSummary'
-
-const customer = {
-    addresses: [
-        {
-            text: "New york"
-        },
-        {
-            text: "Delhi"
-        },
-    ]
-}
+import { useQuery } from '@tanstack/react-query'
+import { getCustomer } from '@/lib/http-client/api'
+import { Customer } from '@/lib/types'
 
 const formSchema = z.object({
     address: z.string().min(1, "Please select an address"),
@@ -40,8 +32,21 @@ const CustomerForm = () => {
         resolver: zodResolver(formSchema)
     })
 
+    const { data: customerData, isLoading, isError, error } = useQuery({
+        queryKey: ['getCustomer'],
+        queryFn: getCustomer,
+    })
+
+
+
     const handlePlaceOrder = () => {
 
+    }
+
+    if (isLoading) {
+        return (
+            <div>Loading....</div>
+        )
     }
 
     return (
@@ -61,7 +66,8 @@ const CustomerForm = () => {
                                         name='firstName'
                                         type='text'
                                         className='w-full'
-                                        defaultValue={"Vedant"}
+                                        defaultValue={(customerData?.data as Customer)?.firstName}
+                                        disabled
                                     />
                                 </div>
                                 <div className='grid gap-3'>
@@ -71,7 +77,8 @@ const CustomerForm = () => {
                                         name='lastName'
                                         type='text'
                                         className='w-full'
-                                        defaultValue={"Jathar"}
+                                        defaultValue={(customerData?.data as Customer)?.lastName}
+                                        disabled
                                     />
                                 </div>
                                 <div className='grid gap-3'>
@@ -81,7 +88,8 @@ const CustomerForm = () => {
                                         name='email'
                                         type='text'
                                         className='w-full'
-                                        defaultValue={"jathar@gmail.com"}
+                                        defaultValue={(customerData?.data as Customer)?.email}
+                                        disabled
                                     />
                                 </div>
 
@@ -103,7 +111,7 @@ const CustomerForm = () => {
                                                                 onValueChange={field.onChange}
                                                                 className='grid grid-col-2 gap-6 mt-2'>
                                                                 {
-                                                                    customer.addresses.map(
+                                                                    (customerData?.data as Customer)?.addresses.map(
                                                                         (address) => {
                                                                             return (
                                                                                 <Card

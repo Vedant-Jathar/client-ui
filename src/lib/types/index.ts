@@ -62,3 +62,17 @@ export type Topping = {
     image: string
     isPublished: boolean
 }
+
+export interface address {
+    text: string,
+    isDefault: boolean
+}
+
+export interface Customer {
+    _id: string
+    userId: string
+    firstName: string
+    lastName: string
+    email: string
+    addresses: address[]
+}
