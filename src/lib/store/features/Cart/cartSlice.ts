@@ -16,11 +16,13 @@ export interface CartItem {
 }
 
 type CartState = {
-    cartItems: CartItem[]
+    cartItems: CartItem[],
+    totalCartPrice: number
 }
 
 const initialState: CartState = {
-    cartItems: []
+    cartItems: [],
+    totalCartPrice: 0
 }
 
 export const cartSlice = createSlice({
@@ -49,13 +51,22 @@ export const cartSlice = createSlice({
             } else {
                 state.cartItems[indexOfCartItem].qty = Math.max(1, state.cartItems[indexOfCartItem].qty! + action.payload.change)
             }
+            
+            if (typeof window !== undefined && window.localStorage) {
+                window.localStorage.setItem('CartItems', JSON.stringify(state.cartItems))
+            }
+        },
 
-            window.localStorage.setItem('CartItems', JSON.stringify(state.cartItems))
+        setTotalCartPrice: (state, action: PayloadAction<number>) => {
+            state.totalCartPrice = action.payload
+            if (typeof window !== undefined && window.localStorage) {
+                window.localStorage.setItem("totalCartPrice", JSON.stringify(state.totalCartPrice))
+            }
         }
     }
 })
 
-export const { addtoCart, setInitialCartItems, handleQuantityChange } = cartSlice.actions
+export const { addtoCart, setInitialCartItems, handleQuantityChange, setTotalCartPrice } = cartSlice.actions
 
 export default cartSlice.reducer
 

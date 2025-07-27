@@ -1,16 +1,24 @@
 "use client"
-import { useAppSelector } from '@/lib/store/hooks/hooks'
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks/hooks'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import CartItem from './cart-item'
 import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
+import { setTotalCartPrice } from '@/lib/store/features/Cart/cartSlice'
 
 const CartItems = () => {
+    const dispatch = useAppDispatch()
     const cartItems = useAppSelector(state => state.cart.cartItems)
 
-    const totalCartPrice = cartItems.reduce((acc, curr) => acc + (curr.pricePerUnit! * curr.qty!), 0)
+    const totalCartPrice = useMemo(() => {
+        return cartItems.reduce((acc, curr) => acc + (curr.pricePerUnit! * curr.qty!), 0)
+    }, [cartItems])
+
+    useEffect(() => {
+        dispatch(setTotalCartPrice(totalCartPrice))
+    }, [dispatch, totalCartPrice])
 
     const searchParams = useSearchParams()
 

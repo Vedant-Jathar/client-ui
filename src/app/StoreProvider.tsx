@@ -1,5 +1,5 @@
 'use client'
-import { CartItem, setInitialCartItems } from '@/lib/store/features/Cart/cartSlice'
+import { CartItem, setInitialCartItems, setTotalCartPrice } from '@/lib/store/features/Cart/cartSlice'
 import { AppStore, makeStore } from '@/lib/store/store'
 import { useEffect, useRef } from 'react'
 import { Provider } from 'react-redux'
@@ -19,11 +19,13 @@ export default function StoreProvider({
 
     useEffect(() => {
         const cartItemsString = window.localStorage.getItem('CartItems')
+        const totalCartPrice = Number(window.localStorage.getItem("totalCartPrice"))
 
         if (cartItemsString) {
             try {
                 const parsedItems = JSON.parse(cartItemsString) as CartItem[]
                 storeRef.current?.dispatch(setInitialCartItems(parsedItems))
+                storeRef.current?.dispatch(setTotalCartPrice(totalCartPrice))
             } catch (error) {
                 console.error('Error parsing CartItems from localStorage:', error)
             }

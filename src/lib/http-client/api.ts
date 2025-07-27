@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addAddressData } from "../types";
+import { addAddressData, verifyCouponData } from "../types";
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL,
@@ -8,7 +8,7 @@ export const api = axios.create({
         "Content-Type": "application/json",
         Accept: "application/json"
     }
-})c
+})
 
 const ORDER_SERVICE_GATEWAY = "/api/order"
 
@@ -16,3 +16,4 @@ export const getCustomer = async () => await api.get(`${ORDER_SERVICE_GATEWAY}/c
 
 export const addAddress = async (Data: addAddressData) => await api.patch(`${ORDER_SERVICE_GATEWAY}/customer/addresses/${Data.customerId}`, Data)
 
+export const verifyCoupon = async (data: verifyCouponData) => await api.post(`${ORDER_SERVICE_GATEWAY}/coupons/verify`, data)

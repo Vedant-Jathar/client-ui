@@ -81,3 +81,13 @@ export interface addAddressData {
     address: string,
     customerId: string
 }
+
+export interface verifyCouponData {
+    code: string | undefined,
+    tenantId: string
+}
+
+export interface verifyCouponResponse {
+    valid: boolean,
+    discount: number
+}
