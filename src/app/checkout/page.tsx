@@ -21,7 +21,10 @@ const Checkout = async ({ searchParams }: { searchParams: { restaurant: string }
 
     return (
         <>
-            <CustomerForm />
+            <div className='pb-25'>
+                <CustomerForm />
+            </div>
+
         </>
     )
 }

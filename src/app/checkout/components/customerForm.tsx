@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import AddAddress from './addAddress'
 import { RadioGroup } from '@radix-ui/react-radio-group'
 import { RadioGroupItem } from '@/components/ui/radio-group'
 import { Coins, CreditCard } from 'lucide-react'
@@ -16,6 +15,7 @@ import OrderSummary from './orderSummary'
 import { useQuery } from '@tanstack/react-query'
 import { getCustomer } from '@/lib/http-client/api'
 import { Customer } from '@/lib/types'
+import AddAddress from './addAddress'
 
 const formSchema = z.object({
     address: z.string().min(1, "Please select an address"),
@@ -55,7 +55,7 @@ const CustomerForm = () => {
                 <div className='flex container gap-6 mt-16'>
                     <Card className='w-3/5 border-none'>
                         <CardHeader>
-                            <CardTitle>Customer details</CardTitle>
+                            <CardTitle className='text-[20px]'>Customer details</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className='grid gap-6'>
@@ -97,7 +97,7 @@ const CustomerForm = () => {
                                     <div>
                                         <div className='flex items-center justify-between'>
                                             <Label htmlFor='name'>Address</Label>
-                                            <AddAddress />
+                                            <AddAddress customerId={(customerData?.data as Customer)._id} />
                                         </div>
 
                                         <FormField
@@ -109,7 +109,7 @@ const CustomerForm = () => {
                                                         <FormControl>
                                                             <RadioGroup
                                                                 onValueChange={field.onChange}
-                                                                className='grid grid-col-2 gap-6 mt-2'>
+                                                                className='grid grid-cols-2 gap-6 mt-2'>
                                                                 {
                                                                     (customerData?.data as Customer)?.addresses.map(
                                                                         (address) => {
@@ -124,7 +124,7 @@ const CustomerForm = () => {
                                                                                                 id={address.text}
                                                                                             />
                                                                                         </FormControl>
-                                                                                        <Label htmlFor={address.text} className='leading-normal'>
+                                                                                        <Label htmlFor={address.text} className='leading-normal font-normal tracking-wide'>
                                                                                             {address.text}
                                                                                         </Label>
                                                                                     </div>

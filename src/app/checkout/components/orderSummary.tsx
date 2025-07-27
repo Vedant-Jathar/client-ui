@@ -12,7 +12,7 @@ const OrderSummary = () => {
   return (
     <Card className='w-2/5 border-none h-auto self-start'>
       <CardHeader>
-        <CardTitle>Order Summary</CardTitle>
+        <CardTitle className='text-[20px]'>Order Summary</CardTitle>
       </CardHeader>
       <CardContent className='grid gap-4 pt-6'>
         <div className='flex items-center justify-between'>
@@ -39,7 +39,7 @@ const OrderSummary = () => {
           <span className='font-bold'>₹ 1800</span>
         </div>
 
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-4 mt-10'>
           <Input
             id='coupon'
             name="code"

@@ -76,3 +76,8 @@ export interface Customer {
     email: string
     addresses: address[]
 }
+
+export interface addAddressData {
+    address: string,
+    customerId: string
+}
