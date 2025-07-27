@@ -38,14 +38,17 @@ const AddAddress = ({ customerId }: { customerId: string }) => {
     }
   })
 
-  const hadleAddAddress = (data: z.infer<typeof formSchema>) => {
-    const Data = {
-      ...data,
-      customerId
-    }
+  const hadleAddAddress = (e: React.FormEvent<HTMLElement>) => {
+    e.stopPropagation()
 
-    console.log("Data", Data);
-    addAddressMutate(Data)
+    return addressForm.handleSubmit((data: z.infer<typeof formSchema>) => {
+      const Data = {
+        ...data,
+        customerId
+      }
+      addAddressMutate(Data)
+    })(e)
+
   }
 
   return (
@@ -59,7 +62,7 @@ const AddAddress = ({ customerId }: { customerId: string }) => {
         </DialogTrigger>
         <DialogContent className='sm:max-w-[425px]'>
           <Form {...addressForm}>
-            <form onSubmit={addressForm.handleSubmit(hadleAddAddress)}>
+            <form onSubmit={hadleAddAddress}>
               <DialogHeader>
                 <DialogTitle>
                   Add Address

@@ -18,12 +18,8 @@ import { Customer } from '@/lib/types'
 import AddAddress from './addAddress'
 
 const formSchema = z.object({
-    address: z.string().min(1, "Please select an address"),
-    paymentMode: z
-        .enum(["card", "cash"])
-        .refine(val => val === "card" || val === "cash", {
-            message: "You need to select a payment mode type"
-        }),
+    address: z.string("Please select an address"),
+    paymentMode: z.string("Please select a Payment mode"),
     comment: z.any()
 })
 
@@ -32,15 +28,14 @@ const CustomerForm = () => {
         resolver: zodResolver(formSchema)
     })
 
-    const { data: customerData, isLoading, isError, error } = useQuery({
+    const { data: customerData, isLoading } = useQuery({
         queryKey: ['getCustomer'],
         queryFn: getCustomer,
     })
 
 
-
-    const handlePlaceOrder = () => {
-
+    const handlePlaceOrder = (data: z.infer<typeof formSchema>) => {
+        console.log("data", data);
     }
 
     if (isLoading) {
@@ -138,6 +133,8 @@ const CustomerForm = () => {
 
                                                             </RadioGroup>
                                                         </FormControl>
+                                                        <FormMessage />
+
                                                     </FormItem>
                                                 )
                                             }}
