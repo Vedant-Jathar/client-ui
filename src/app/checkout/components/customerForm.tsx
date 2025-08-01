@@ -42,11 +42,9 @@ const CustomerForm = () => {
         retry: 3,
         onSuccess: async (response) => {
             const paymentUrl = (response.data as createOrderResponse).paymentUrl
-            console.log("paymentUrl", paymentUrl);
-
-            // if (paymentUrl) {
-            //     window.location.href = paymentUrl;
-            // }
+            if (paymentUrl) {
+                window.location.href = paymentUrl;
+            }
         }
     })
 
