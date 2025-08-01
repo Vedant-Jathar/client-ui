@@ -42,6 +42,13 @@ export const cartSlice = createSlice({
             state.cartItems = action.payload
         },
 
+        clearCart: (state) => {
+            state.cartItems = []
+            if (typeof window !== undefined && window.localStorage) {
+                window.localStorage.setItem("CartItems", "[]")
+            }
+        },
+
         handleQuantityChange: (state, action: PayloadAction<{ hash: string, change: number }>) => {
 
             const indexOfCartItem = state.cartItems.findIndex((item) => item.hash === action.payload.hash)
@@ -51,7 +58,7 @@ export const cartSlice = createSlice({
             } else {
                 state.cartItems[indexOfCartItem].qty = Math.max(1, state.cartItems[indexOfCartItem].qty! + action.payload.change)
             }
-            
+
             if (typeof window !== undefined && window.localStorage) {
                 window.localStorage.setItem('CartItems', JSON.stringify(state.cartItems))
             }
@@ -59,14 +66,14 @@ export const cartSlice = createSlice({
 
         setTotalCartPrice: (state, action: PayloadAction<number>) => {
             state.totalCartPrice = action.payload
-            if (typeof window !== undefined && window.localStorage) {
+            if (typeof window !== undefined && window?.localStorage) {
                 window.localStorage.setItem("totalCartPrice", JSON.stringify(state.totalCartPrice))
             }
         }
     }
 })
 
-export const { addtoCart, setInitialCartItems, handleQuantityChange, setTotalCartPrice } = cartSlice.actions
+export const { addtoCart, setInitialCartItems, handleQuantityChange, setTotalCartPrice, clearCart } = cartSlice.actions
 
 export default cartSlice.reducer
 

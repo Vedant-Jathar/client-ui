@@ -44,6 +44,10 @@ const CustomerForm = () => {
             const paymentUrl = (response.data as createOrderResponse).paymentUrl
             if (paymentUrl) {
                 window.location.href = paymentUrl;
+            } else {
+                const orderId = (response.data as createOrderResponse).orderId
+                const tenantId = (response.data as createOrderResponse).tenantId
+                window.location.href = `/payment?orderId=${orderId}&restaurant=${tenantId}`
             }
         }
     })

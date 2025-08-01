@@ -106,5 +106,7 @@ export interface createOrderData {
 }
 
 export interface createOrderResponse {
-    paymentUrl: string
+    paymentUrl: string,
+    orderId?: string,
+    tenantId?: string
 }
