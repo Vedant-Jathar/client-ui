@@ -8,10 +8,7 @@ const Checkout = async ({ searchParams }: { searchParams: { restaurant: string }
     const sParams = new URLSearchParams(searchParams)
     const existingQueryParamsStr = sParams.toString()
 
-
     sParams.append("return-to", `/checkout?${existingQueryParamsStr}`)
-
-    console.log("sParams", sParams);
 
     const session = await getSession()
 

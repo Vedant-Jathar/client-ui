@@ -27,6 +27,7 @@ export interface Category {
 }
 
 
+
 export type ProductAttribute = {
     name: string;
     value: string | boolean;

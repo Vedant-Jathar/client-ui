@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RadioGroup } from '@radix-ui/react-radio-group'
@@ -16,6 +16,9 @@ import { useQuery } from '@tanstack/react-query'
 import { getCustomer } from '@/lib/http-client/api'
 import { Customer } from '@/lib/types'
 import AddAddress from './addAddress'
+import { useSearchParams } from 'next/navigation'
+import { useAppSelector } from '@/lib/store/hooks/hooks'
+import { stat } from 'fs'
 
 const formSchema = z.object({
     address: z.string("Please select an address"),
@@ -28,14 +31,31 @@ const CustomerForm = () => {
         resolver: zodResolver(formSchema)
     })
 
+    const [couponCode, sesCouponCode] = useState("")
+
+    const cart = useAppSelector(state => state.cart)
+
+    const handleCouponCode = (value: string) => {
+        sesCouponCode(value)
+    }
+
     const { data: customerData, isLoading } = useQuery({
         queryKey: ['getCustomer'],
         queryFn: getCustomer,
     })
 
+    const searchParams = useSearchParams()
 
     const handlePlaceOrder = (data: z.infer<typeof formSchema>) => {
-        console.log("data", data);
+        const tenantId = searchParams.get("restaurant")
+        const orderData = {
+            ...data,
+            cart: cart.cartItems,
+            couponCode,
+            tenantId,
+            customerId: (customerData?.data as Customer)?._id
+        }
+        console.log("orderData", orderData);
     }
 
     if (isLoading) {
@@ -221,7 +241,7 @@ const CustomerForm = () => {
                         </CardContent>
                     </Card>
 
-                    <OrderSummary />
+                    <OrderSummary handleCouponCode={handleCouponCode} />
                 </div>
 
             </form>

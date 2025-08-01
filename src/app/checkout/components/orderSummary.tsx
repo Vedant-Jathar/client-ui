@@ -11,7 +11,7 @@ import React, { useMemo, useState } from 'react'
 
 const TAXES_PERCANTAGE = 18
 
-const OrderSummary = () => {
+const OrderSummary = ({ handleCouponCode }: { handleCouponCode: (value: string) => void }) => {
   const couponCodeRef = React.useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams()
   const [couponInvalid, setCouponInvalid] = useState<boolean | null>(null)
@@ -25,6 +25,7 @@ const OrderSummary = () => {
       if ((response.data as verifyCouponResponse).valid) {
         setCouponInvalid(false)
         setDiscountPercentage((response.data as verifyCouponResponse).discount)
+        handleCouponCode(couponCodeRef.current ? couponCodeRef.current.value : "")
         return
       }
       if (!(response.data as verifyCouponResponse).valid) {
