@@ -6,12 +6,13 @@ import { verifyCoupon } from '@/lib/http-client/api';
 import { useAppSelector } from '@/lib/store/hooks/hooks';
 import { verifyCouponResponse } from '@/lib/types';
 import { useMutation } from '@tanstack/react-query';
+import { LoaderCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import React, { useMemo, useState } from 'react'
 
 const TAXES_PERCANTAGE = 18
 
-const OrderSummary = ({ handleCouponCode }: { handleCouponCode: (value: string) => void }) => {
+const OrderSummary = ({ handleCouponCode, isCreateOrderPending }: { handleCouponCode: (value: string) => void, isCreateOrderPending: boolean }) => {
   const couponCodeRef = React.useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams()
   const [couponInvalid, setCouponInvalid] = useState<boolean | null>(null)
@@ -127,8 +128,15 @@ const OrderSummary = ({ handleCouponCode }: { handleCouponCode: (value: string) 
         {(couponInvalid || isError) && <p className='text-red-700'>Invalid coupon</p>}
         {(couponInvalid === false && !isError) && <p className='text-green-700'>Coupon Applied!</p>}
         <div className='text-right mt-3'>
-          <Button>
-            <span>Place order</span>
+          <Button disabled={isCreateOrderPending}>
+            {
+              isCreateOrderPending ?
+                <div className='flex items-center gap-1'>
+                  <LoaderCircle className='animate-spin' />
+                  <span>Please wait</span>
+                </div> :
+                <span>Place Order</span>
+            }
           </Button>
         </div>
       </CardContent>

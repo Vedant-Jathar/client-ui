@@ -30,7 +30,7 @@ const CustomerForm = () => {
 
     const idempotencyKeyRef = useRef("")
 
-    const { mutate: createOrderMutate } = useMutation({
+    const { mutate: createOrderMutate, isPending: isCreateOrderPending } = useMutation({
         mutationKey: ['createOrder'],
         mutationFn: async (orderData: createOrderData) => {
             if (!idempotencyKeyRef.current) {
@@ -271,7 +271,7 @@ const CustomerForm = () => {
                         </CardContent>
                     </Card>
 
-                    <OrderSummary handleCouponCode={handleCouponCode} />
+                    <OrderSummary handleCouponCode={handleCouponCode} isCreateOrderPending={isCreateOrderPending} />
                 </div>
 
             </form>
