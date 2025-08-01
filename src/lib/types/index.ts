@@ -1,3 +1,5 @@
+import { CartItem } from "../store/features/Cart/cartSlice"
+
 export interface Tenant {
     id: string
     name: string
@@ -91,4 +93,18 @@ export interface verifyCouponData {
 export interface verifyCouponResponse {
     valid: boolean,
     discount: number
+}
+
+export interface createOrderData {
+    tenantId: string,
+    customerId: string,
+    address: string,
+    paymentMode: string,
+    cart: CartItem[],
+    couponCode: string,
+    comment?: string
+}
+
+export interface createOrderResponse {
+    paymentUrl: string
 }

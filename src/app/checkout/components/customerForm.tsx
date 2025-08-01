@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RadioGroup } from '@radix-ui/react-radio-group'
@@ -12,13 +12,13 @@ import { RadioGroupItem } from '@/components/ui/radio-group'
 import { Coins, CreditCard } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import OrderSummary from './orderSummary'
-import { useQuery } from '@tanstack/react-query'
-import { getCustomer } from '@/lib/http-client/api'
-import { Customer } from '@/lib/types'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { createOrder, getCustomer } from '@/lib/http-client/api'
+import { createOrderData, createOrderResponse, Customer } from '@/lib/types'
 import AddAddress from './addAddress'
 import { useSearchParams } from 'next/navigation'
 import { useAppSelector } from '@/lib/store/hooks/hooks'
-import { stat } from 'fs'
+import { v4 as uuidv4 } from "uuid"
 
 const formSchema = z.object({
     address: z.string("Please select an address"),
@@ -27,6 +27,29 @@ const formSchema = z.object({
 })
 
 const CustomerForm = () => {
+
+    const idempotencyKeyRef = useRef("")
+
+    const { mutate: createOrderMutate } = useMutation({
+        mutationKey: ['createOrder'],
+        mutationFn: async (orderData: createOrderData) => {
+            if (!idempotencyKeyRef.current) {
+                idempotencyKeyRef.current = uuidv4()
+            }
+            // const idempotencyKey = idempotencyKeyRef.current
+            return await createOrder(orderData, idempotencyKeyRef.current)
+        },
+        retry: 3,
+        onSuccess: async (response) => {
+            const paymentUrl = (response.data as createOrderResponse).paymentUrl
+            console.log("paymentUrl", paymentUrl);
+
+            // if (paymentUrl) {
+            //     window.location.href = paymentUrl;
+            // }
+        }
+    })
+
     const customerForm = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
     })
@@ -42,12 +65,17 @@ const CustomerForm = () => {
     const { data: customerData, isLoading } = useQuery({
         queryKey: ['getCustomer'],
         queryFn: getCustomer,
+
     })
 
     const searchParams = useSearchParams()
 
     const handlePlaceOrder = (data: z.infer<typeof formSchema>) => {
         const tenantId = searchParams.get("restaurant")
+        if (!tenantId) {
+            alert("Pls select the restaurant")
+            return
+        }
         const orderData = {
             ...data,
             cart: cart.cartItems,
@@ -56,6 +84,8 @@ const CustomerForm = () => {
             customerId: (customerData?.data as Customer)?._id
         }
         console.log("orderData", orderData);
+
+        createOrderMutate(orderData)
     }
 
     if (isLoading) {

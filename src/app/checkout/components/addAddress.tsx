@@ -12,7 +12,6 @@ import { useForm } from 'react-hook-form'
 import { z } from "zod"
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addAddress } from '@/lib/http-client/api'
-import { Span } from 'next/dist/trace'
 
 const formSchema = z.object({
   address: z.string().min(2, "Address should be atleast 2 characters")
