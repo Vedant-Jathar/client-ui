@@ -1,10 +1,20 @@
 "use client"
-
-import { Step, StepItem, Stepper } from '@/components/stepper'
+import { Step, StepItem, Stepper, useStepper } from '@/components/stepper'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Check, Dot } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
+
+const StepperChanger = () => {
+    const { setStep, nextStep } = useStepper()
+    useEffect(() => {
+        setInterval(() => {
+            nextStep()
+        }, 2000)
+    }, [])
+
+    return <></>
+}
 
 const SingleOrder = () => {
     const steps = [
@@ -40,12 +50,13 @@ const SingleOrder = () => {
                 </CardHeader>
                 <Separator />
                 <CardContent className='pt-5'>
-                    <Stepper variant='circle-alt' initialStep={3} checkIcon={Check} steps={steps}>
+                    <Stepper variant='circle-alt' initialStep={0} checkIcon={Check} steps={steps}>
                         {steps.map(({ label, description }) => {
                             return (
                                 <Step key={label} icon={Dot} checkIcon={Check} label={label} description={description}></Step>
                             )
                         })}
+                        <StepperChanger />
                     </Stepper>
                 </CardContent>
             </Card>
