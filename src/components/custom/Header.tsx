@@ -50,7 +50,7 @@ const Header = async () => {
                 <div className='flex items-center gap-4'>
                     <ul className='flex items-center space-x-4'>
                         <li><Link className='hover:text-primary font-medium' href={"/menu"}>Menu</Link></li>
-                        <li><Link className='hover:text-primary font-medium' href={"/menu"}>Orders</Link></li>
+                        <li><Link className='hover:text-primary font-medium' href={"/orders"}>Orders</Link></li>
                     </ul>
 
                     <ClientCounterComponent />
