@@ -75,7 +75,7 @@ const Orders = async () => {
                                                             <TableCell className='text-center' >Rs.{order.total}</TableCell>
                                                             <TableCell className='text-center'>{date}</TableCell>
                                                             <TableCell className='text-center' >
-                                                                <Link href={`/orders/${order._id}`}>
+                                                                <Link href={`/order/${order._id}`}>
                                                                     <Button className='cursor-pointer' variant={'link'}>More details</Button>
                                                                 </Link></TableCell>
                                                         </TableRow>
