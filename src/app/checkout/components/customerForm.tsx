@@ -74,6 +74,11 @@ const CustomerForm = () => {
 
     const handlePlaceOrder = (data: z.infer<typeof formSchema>) => {
         const tenantId = searchParams.get("restaurant")
+        if (tenantId === "null") {
+            alert("Pls select restaurant")
+            return
+        }
+
         if (!tenantId) {
             alert("Pls select the restaurant")
             return

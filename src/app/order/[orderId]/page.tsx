@@ -2,7 +2,11 @@
 import { Step, StepItem, Stepper, useStepper } from '@/components/stepper'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { getSingleOrder } from '@/lib/http-client/api'
+import { Order } from '@/lib/types'
+import { useQuery } from '@tanstack/react-query'
 import { Check, Dot } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 const StepperChanger = () => {
@@ -10,13 +14,23 @@ const StepperChanger = () => {
     useEffect(() => {
         setInterval(() => {
             nextStep()
-        }, 2000)
+        }, 2000000)
     }, [])
 
     return <></>
 }
 
 const SingleOrder = () => {
+
+    const { orderId } = useParams()
+
+    const { data: orderData } = useQuery({
+        queryKey: ["getSingleOrder"],
+        queryFn: async () => {
+            return await getSingleOrder(orderId as string).then(res => res.data)
+        }
+    })
+
     const steps = [
         {
             label: "Recieved",
@@ -68,7 +82,7 @@ const SingleOrder = () => {
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <p>Varun valley kandivali</p>
+                        <p>{(orderData as Order)?.address}</p>
                     </CardContent>
                 </Card>
                 <Card className='w-2/3'>
@@ -79,19 +93,19 @@ const SingleOrder = () => {
                     <CardContent className='flex flex-col gap-2'>
                         <div >
                             <span className='font-medium mr-2'>Order Id:</span>
-                            <span>76868998</span>
+                            <span>{(orderData as Order)?._id}</span>
                         </div>
                         <div>
                             <span className='font-medium mr-2'>Restaurant:</span>
-                            <span>8</span>
+                            <span>{(orderData as Order)?.tenantId}</span>
                         </div>
                         <div>
                             <span className='font-medium mr-2'>Payment Status:</span>
-                            <span>Paid</span>
+                            <span>{(orderData as Order)?.paymentStatus.toUpperCase()}</span>
                         </div>
                         <div>
                             <span className='font-medium mr-2'>Payment Mode:</span>
-                            <span>card</span>
+                            <span>{(orderData as Order)?.paymentMode.toUpperCase()}</span>
                         </div>
                     </CardContent>
                 </Card>
