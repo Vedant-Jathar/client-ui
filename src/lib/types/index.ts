@@ -134,7 +134,7 @@ export enum PaymentStatus {
 export interface Order {
     _id: string,
     cart?: CartItem[],
-    customerId: string,
+    customerId: Customer,
     tenantId: string,
     comment?: string,
     address: string,

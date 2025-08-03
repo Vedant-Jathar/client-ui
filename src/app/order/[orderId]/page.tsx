@@ -1,21 +1,37 @@
 "use client"
-import { Step, StepItem, Stepper, useStepper } from '@/components/stepper'
+import { Step, Stepper, useStepper } from '@/components/stepper'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { getSingleOrder } from '@/lib/http-client/api'
+import { api, getSingleOrder } from '@/lib/http-client/api'
 import { Order } from '@/lib/types'
 import { useQuery } from '@tanstack/react-query'
 import { Check, Dot } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 
-const StepperChanger = () => {
+const orderStatusMapping = {
+    "received": 0,
+    "confirmed": 1,
+    "prepared": 2,
+    "out-for-delivery": 3,
+    "delivered": 4
+} as { [key: string]: number }
+
+const StepperChanger = ({ orderId }: { orderId: string }) => {
     const { setStep, nextStep } = useStepper()
+
+    const { data } = useQuery<Order>({
+        queryKey: ["getSingleOrderByPolling"],
+        queryFn: async () => {
+            return await api.get<Order>(`/api/order/orders/${orderId}?fields=orderStatus`).then(res => res.data)
+        },
+        refetchInterval: 10 * 1000
+    })
+
     useEffect(() => {
-        setInterval(() => {
-            nextStep()
-        }, 2000000)
-    }, [])
+        const currentStep = orderStatusMapping[(data as Order)?.orderStatus as string] || 0
+        setStep(currentStep + 1)
+    }, [data])
 
     return <></>
 }
@@ -70,7 +86,7 @@ const SingleOrder = () => {
                                 <Step key={label} icon={Dot} checkIcon={Check} label={label} description={description}></Step>
                             )
                         })}
-                        <StepperChanger />
+                        <StepperChanger orderId={orderId as string} />
                     </Stepper>
                 </CardContent>
             </Card>
@@ -82,6 +98,7 @@ const SingleOrder = () => {
                     </CardHeader>
                     <Separator />
                     <CardContent>
+                        <p className='font-semibold mb-2'>{`${(orderData as Order)?.customerId.firstName} ${(orderData as Order)?.customerId.lastName}`}</p>
                         <p>{(orderData as Order)?.address}</p>
                     </CardContent>
                 </Card>

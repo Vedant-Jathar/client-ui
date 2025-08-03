@@ -28,3 +28,4 @@ export const createOrder = async (data: createOrderData, idempotencyKey: string)
 
 // Get single order:
 export const getSingleOrder = async (id: string) => await api.get(`${ORDER_SERVICE_GATEWAY}/orders/${id}`)
+
