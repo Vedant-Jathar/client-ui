@@ -13,12 +13,12 @@ const orderStatusMapping = {
     "received": 0,
     "confirmed": 1,
     "prepared": 2,
-    "out-for-delivery": 3,
+    "out_for_delivery": 3,
     "delivered": 4
 } as { [key: string]: number }
 
 const StepperChanger = ({ orderId }: { orderId: string }) => {
-    const { setStep, nextStep } = useStepper()
+    const { setStep } = useStepper()
 
     const { data } = useQuery<Order>({
         queryKey: ["getSingleOrderByPolling"],
@@ -31,7 +31,7 @@ const StepperChanger = ({ orderId }: { orderId: string }) => {
     useEffect(() => {
         const currentStep = orderStatusMapping[(data as Order)?.orderStatus as string] || 0
         setStep(currentStep + 1)
-    }, [data])
+    }, [data, setStep])
 
     return <></>
 }
