@@ -3,7 +3,13 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import CustomerForm from './components/customerForm'
 
-const Checkout = async ({ searchParams }: { searchParams: { restaurant?: string } }) => {
+interface CheckoutPageProps {
+  searchParams?: {
+    restaurant?: string;
+  };
+}
+
+const Checkout = async ({ searchParams }: CheckoutPageProps) => {
 
     const sParams = new URLSearchParams(searchParams)
     const existingQueryParamsStr = sParams.toString()

@@ -3,8 +3,14 @@ import Image from "next/image";
 import { Suspense } from "react";
 import ProductList from "./components/product-list";
 
-export default async function Home({ searchParams }: { searchParams: { restaurant?: string } }) {
-  
+interface HomePageProps {
+  searchParams?: {
+    restaurant?: string;
+  };
+}
+
+export default async function Home({ searchParams }: HomePageProps) {
+
   return (
     <>
       <section className="bg-white">
