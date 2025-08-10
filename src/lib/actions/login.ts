@@ -1,6 +1,6 @@
 "use server"
 
-import cookie from "cookie"
+import { parse } from "cookie"
 import { cookies } from "next/headers"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,8 +35,8 @@ export async function login(prevState: any, formData: FormData) {
         const accessToken = cookiesArray.find(cookie => cookie.startsWith("accessToken"))
         const refreshToken = cookiesArray.find(cookie => cookie.startsWith("refreshToken"))
 
-        const parsedAccessToken = cookie.parse(accessToken as string)
-        const parsedRefreshToken = cookie.parse(refreshToken as string)
+        const parsedAccessToken = parse(accessToken as string)
+        const parsedRefreshToken = parse(refreshToken as string)
 
         const cookieStore = await cookies()
 

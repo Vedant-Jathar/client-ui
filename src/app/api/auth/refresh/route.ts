@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
-import cookie from "cookie"
-import { strict } from "assert";
+import { parse } from "cookie"
 
 export async function POST() {
     const cookieGetter = await cookies()
@@ -26,8 +25,8 @@ export async function POST() {
         const accessToken = cookiesArray.find((c) => c.startsWith("accessToken"))
         const refreshToken = cookiesArray.find((c) => c.startsWith("refreshToken"))
 
-        const parsedAccessToken = cookie.parse(accessToken as string)
-        const parsedRefreshToken = cookie.parse(refreshToken as string)
+        const parsedAccessToken = parse(accessToken as string)
+        const parsedRefreshToken = parse(refreshToken as string)
 
         cookieGetter.set({
             name: "accessToken",
