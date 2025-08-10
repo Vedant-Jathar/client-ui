@@ -164,7 +164,9 @@ const HorizontalContent = ({ children }: { children: React.ReactNode }) => {
                 if (!React.isValidElement(node)) {
                     return null;
                 }
-                return React.Children.map(node.props.children, (childNode) => childNode);
+                if (React.isValidElement<{ children?: React.ReactNode }>(node)) {
+                    return React.Children.map(node.props.children, (childNode) => childNode);
+                }
             })}
         </>
     );
