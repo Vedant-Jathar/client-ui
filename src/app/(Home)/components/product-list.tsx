@@ -3,7 +3,7 @@ import { Category, Product } from '@/lib/types';
 import React from 'react'
 import ProductCard from './product-card';
 
-export const ProductList = async ({ searchParams }: { searchParams: { restaurant: string } }) => {
+export const ProductList = async ({ searchParams }: { searchParams: { restaurant?: string } }) => {
     
     const [categoriesResponse, productsResponse] = await Promise.all([fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/category`), fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/products?limit=100&tenantId=${searchParams.restaurant}`)]);
 

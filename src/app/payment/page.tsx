@@ -2,12 +2,12 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, CheckCircle, Store } from 'lucide-react'
+import {  CheckCircle, Store } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import ClearCart from './clear-cart'
 
-const Payment = ({ searchParams }: { searchParams: { orderId: string, restaurant: string, razorpay_payment_link_status: string } }) => {
+const Payment = ({ searchParams }: { searchParams: { orderId?: string, restaurant?: string, razorpay_payment_link_status?: string } }) => {
 
     return (
         <div className='mt-22 flex flex-col items-center justify-center'>

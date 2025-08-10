@@ -94,7 +94,7 @@ const ProductModal = ({ product }: { product: Product }) => {
 
         return cartItems.some((cartItem) => cartItem.hash === hash)
 
-    }, [chosenConfig, selectedToppings, product, cartItems])
+    }, [chosenConfig, selectedToppings, product, cartItems,totalPrice])
 
 
 
