@@ -3,6 +3,7 @@
 import cookie from "cookie"
 import { cookies } from "next/headers"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function login(prevState: any, formData: FormData) {
     const email = formData.get("email")
     const password = formData.get("password")

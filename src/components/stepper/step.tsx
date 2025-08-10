@@ -13,6 +13,7 @@ interface StepInternalConfig {
 
 interface FullStepProps extends StepProps, StepInternalConfig {}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Step = React.forwardRef<HTMLLIElement, StepProps>((props, ref: React.Ref<any>) => {
     const {
         children,
