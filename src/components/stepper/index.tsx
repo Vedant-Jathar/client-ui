@@ -112,11 +112,11 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
     }
 );
 
-Stepper.defaultProps = {
-    size: 'md',
-    orientation: 'horizontal',
-    responsive: true,
-};
+// Stepper.defaultProps = {
+//     size: 'md',
+//     orientation: 'horizontal',
+//     responsive: true,
+// };
 
 const VerticalContent = ({ children }: { children: React.ReactNode }) => {
     const { activeStep } = useStepper();
@@ -128,6 +128,7 @@ const VerticalContent = ({ children }: { children: React.ReactNode }) => {
         <>
             {React.Children.map(children, (child, i) => {
                 const isCompletedStep =
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (React.isValidElement(child) && (child.props as any).isCompletedStep) ??
                     i < activeStep;
                 const isLastStep = i === stepCount - 1;
