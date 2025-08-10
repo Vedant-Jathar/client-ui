@@ -4,13 +4,11 @@ import { Suspense } from "react";
 import ProductList from "./components/product-list";
 
 interface HomePageProps {
-  searchParams?: {
-    restaurant?: string;
-  };
+  searchParams?: Promise<Record<string, string | undefined>>;
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
-
+  const sParams = await searchParams
   return (
     <>
       <section className="bg-white">
@@ -31,7 +29,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       </section>
 
       <Suspense fallback={<div className="container">Loading</div>}>
-        <ProductList searchParams={searchParams} />
+        <ProductList searchParams={sParams} />
       </Suspense>
     </>
   )

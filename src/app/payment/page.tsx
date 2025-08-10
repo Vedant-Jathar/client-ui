@@ -7,15 +7,13 @@ import Link from 'next/link'
 import React from 'react'
 import ClearCart from './clear-cart'
 
-interface PaymentPageProps {
-    searchParams?: {
-        orderId?: string,
-        restaurant?: string,
-        razorpay_payment_link_status?: string
-    }
+interface CheckoutPageProps {
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-const Payment = ({ searchParams }: PaymentPageProps) => {
+const Payment = async ({ searchParams }: CheckoutPageProps) => {
+
+    const sParams = await searchParams
 
     return (
         <div className='mt-22 flex flex-col items-center justify-center'>
@@ -36,16 +34,16 @@ const Payment = ({ searchParams }: PaymentPageProps) => {
                 <CardContent className='flex flex-col items-center'>
                     <div className='flex items-center gap-2 text-[18px] w-full'>
                         <span className='font-semibold'>Order Id:</span>
-                        <Link href={`/order/${searchParams.orderId}`} className='underline text-primary'>{searchParams.orderId}</Link>
+                        <Link href={`/order/${sParams?.orderId}`} className='underline text-primary'>{sParams?.orderId}</Link>
                     </div>
                     <div className='flex items-center gap-2 mt-4 text-[18px] w-full'>
                         <span className='font-semibold'>Payment Status:</span>
                         <span>{
-                            searchParams.razorpay_payment_link_status ? searchParams.razorpay_payment_link_status.toUpperCase() : "PENDING"}
+                            sParams?.razorpay_payment_link_status ? (sParams.razorpay_payment_link_status as string).toUpperCase() : "PENDING"}
                         </span>
                     </div>
                     <Button className='mt-8'>
-                        <Link href={`/?restaurant=${searchParams.restaurant}`}>
+                        <Link href={`/?restaurant=${sParams?.restaurant}`}>
                             <span>Order More</span>
                         </Link>
                     </Button>

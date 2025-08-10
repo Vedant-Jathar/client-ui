@@ -4,14 +4,14 @@ import React from 'react'
 import CustomerForm from './components/customerForm'
 
 interface CheckoutPageProps {
-  searchParams?: {
-    restaurant?: string;
-  };
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 const Checkout = async ({ searchParams }: CheckoutPageProps) => {
+    const SParams = await searchParams
 
-    const sParams = new URLSearchParams(searchParams)
+    const sParams = new URLSearchParams(SParams as Record<string, string>)
+
     const existingQueryParamsStr = sParams.toString()
 
     sParams.append("return-to", `/checkout?${existingQueryParamsStr}`)
