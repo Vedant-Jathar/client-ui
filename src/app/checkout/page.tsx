@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import { getSession } from '@/lib/session'
 import { redirect } from 'next/navigation'
 import React from 'react'
