@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
-import React, { useActionState } from 'react'
+import React, { Suspense, useActionState } from 'react'
 import { login } from '@/lib/actions/login'
 import Image from 'next/image'
 import FormSubmitButton from '@/components/custom/form-submit-button'
@@ -14,7 +14,7 @@ const initialState = {
     message: ""
 }
 
-const Login = () => {
+const LoginForm = () => {
     const [state, formAction] = useActionState(login, initialState)
 
     const searchParams = useSearchParams()
@@ -49,6 +49,14 @@ const Login = () => {
                 </div>
             </div>
         </div>
+    )
+}
+
+const Login = () => {
+    return (
+        <Suspense fallback={<div className="p-10">Loading...</div>}>
+            <LoginForm />
+        </Suspense>
     )
 }
 
