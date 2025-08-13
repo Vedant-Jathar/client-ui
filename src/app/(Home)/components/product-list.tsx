@@ -8,9 +8,8 @@ export const ProductList = async ({ searchParams }: {
         restaurant?: string
     }
 }) => {
-
     const [categoriesResponse, productsResponse] = await Promise.all([fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/category`), fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/catalog/products?limit=100&tenantId=${searchParams?.restaurant}`)]);
-
+    
     if (!productsResponse.ok || !categoriesResponse.ok) {
         throw Error("Failed to load Products or Categories")
     }

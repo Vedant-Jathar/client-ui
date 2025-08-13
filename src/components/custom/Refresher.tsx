@@ -50,7 +50,7 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         startRefresh()
-    }, [])
+    }, [startRefresh])
 
     return (
         <div>{children}</div>

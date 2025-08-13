@@ -18,6 +18,8 @@ const Checkout = async ({ searchParams }: CheckoutPageProps) => {
 
     const session = await getSession()
 
+    console.log("session", session);
+    
     if (!session) {
         return redirect(`/login?${sParams}`)
     }

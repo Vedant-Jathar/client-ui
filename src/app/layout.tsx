@@ -8,7 +8,6 @@ import Header from "@/components/custom/Header";
 import { Toaster } from "sonner";
 import Refresher from "@/components/custom/Refresher";
 import QueryProvider from "./QueryProvider";
-import { Suspense } from "react";
 
 const manrope = Manrope({
   variable: "--font-manrope",

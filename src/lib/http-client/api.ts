@@ -1,6 +1,5 @@
 import axios from "axios";
 import { addAddressData, createOrderData, verifyCouponData } from "../types";
-import { v4 as uuid } from "uuid"
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL,

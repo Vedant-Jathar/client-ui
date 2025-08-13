@@ -135,9 +135,7 @@ const ProductModal = ({ product }: { product: Product }) => {
             setToppings(toppingsList)
         }
         fetchData()
-
-
-    }, [])
+    }, [searchParams])
 
 
     return (

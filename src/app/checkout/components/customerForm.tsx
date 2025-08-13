@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { RadioGroup } from '@radix-ui/react-radio-group'
@@ -67,8 +67,11 @@ const CustomerForm = () => {
     const { data: customerData, isLoading } = useQuery({
         queryKey: ['getCustomer'],
         queryFn: getCustomer,
-
     })
+
+    useEffect(() => {
+        console.log("customer", customerData?.data);
+    }, [customerData])
 
     const searchParams = useSearchParams()
 
@@ -100,6 +103,8 @@ const CustomerForm = () => {
             <div>Loading....</div>
         )
     }
+
+
 
     return (
         <Form {...customerForm}>

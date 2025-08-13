@@ -20,6 +20,7 @@ export const getSession = async () => {
 
 const getSelf = async (): Promise<Session | null> => {
     const cookieGetter = await cookies()
+    console.log("cookieGetter.get(accessToken)?.value", cookieGetter.get("accessToken")?.value);
 
     const response = await fetch(`${process.env.NEXT_BACKEND_API_BASE_URL}/api/auth/auth/self`,
         {
@@ -29,6 +30,7 @@ const getSelf = async (): Promise<Session | null> => {
         }
     )
 
+    console.log("response", response);
 
     if (!response.ok) {
         return null
@@ -36,6 +38,7 @@ const getSelf = async (): Promise<Session | null> => {
 
     const user = await response.json()
 
+    console.log("user", user);
 
     return {
         user

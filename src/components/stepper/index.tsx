@@ -41,7 +41,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
 
         const items = [] as React.ReactElement[];
 
-        const footer = childArr.map((child, _index) => {
+        const footer = childArr.map((child) => {
             if (!React.isValidElement(child)) {
                 throw new Error('Stepper children must be valid React elements.');
             }
