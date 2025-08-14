@@ -20,8 +20,27 @@ export const logout = async () => {
             return null
         }
 
-        cookieGetter.delete("accessToken")
-        cookieGetter.delete("refreshToken")
+        cookieGetter.set({
+            name: "accessToken",
+            domain: ".pizzify.store",//only in production ("localhost" in dev)
+            value: "",
+            httpOnly: true,
+            path: "/",
+            sameSite: "strict",
+            expires: new Date(Date.now() - 1000),
+            secure: true
+        })
+
+        cookieGetter.set({
+            name: "refreshToken",
+            domain: ".pizzify.store",//only in production("localhost" in dev)
+            value: "",
+            httpOnly: true,
+            path: "/",
+            sameSite: "strict",
+            expires: new Date(Date.now() - 1000),
+            secure: true
+        })
     } catch (error) {
         console.log(error);
     }
