@@ -46,6 +46,7 @@ export async function signup(prevState: any, formData: FormData) {
 
         cookieStore.set({
             name: "accessToken",
+            domain: ".pizzify.store",//only in production ("localhost" in dev)
             value: parsedAccessToken.accessToken as string,
             httpOnly: true,
             path: parsedAccessToken.Path as string,
@@ -56,6 +57,7 @@ export async function signup(prevState: any, formData: FormData) {
 
         cookieStore.set({
             name: "refreshToken",
+            domain: ".pizzify.store",//only in production("localhost" in dev)
             value: parsedRefreshToken.refreshToken as string,
             httpOnly: true,
             path: parsedRefreshToken.Path as string,
